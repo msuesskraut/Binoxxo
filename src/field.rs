@@ -62,6 +62,22 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
+    fn field_get_x_oob() {
+        let field = Field::new(3);
+
+        field.get(3, 0);
+    }
+
+    #[test]
+    #[should_panic]
+    fn field_get_y_oob() {
+        let field = Field::new(3);
+
+        field.get(0, 3);
+    }
+
+    #[test]
     fn field_set() {
         let mut field = Field::new(3);
 
@@ -88,5 +104,29 @@ mod tests {
         assert_eq!(Cell::O, field.get(0, 2));
         field.set(2, 0, Cell::X);
         assert_eq!(Cell::X, field.get(2, 0));
+    }
+
+    #[test]
+    #[should_panic]
+    fn field_set_x_oob() {
+        let mut field = Field::new(3);
+
+        field.set(3, 0, Cell::X);
+    }
+
+    #[test]
+    #[should_panic]
+    fn field_set_y_oob() {
+        let mut field = Field::new(3);
+
+        field.set(0, 3, Cell::X);
+    }
+
+    #[test]
+    #[should_panic]
+    fn field_set_empty() {
+        let mut field = Field::new(3);
+
+        field.set(0, 0, Cell::Empty);
     }
 }
