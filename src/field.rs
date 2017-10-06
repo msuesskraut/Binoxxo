@@ -1,28 +1,25 @@
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Cell
-{
+pub enum Cell {
     Empty,
     X,
-    O
+    O,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Field
-{
+pub struct Field {
     size: usize,
-    cells: Vec<Cell>
+    cells: Vec<Cell>,
 }
 
-impl Field
-{
+impl Field {
     pub fn new(size: usize) -> Field {
         Field {
             size,
-            cells: vec![Cell::Empty; size * size]
+            cells: vec![Cell::Empty; size * size],
         }
     }
 
-    pub fn set(&mut self, x: usize, y: usize, cell: Cell)  {
+    pub fn set(&mut self, x: usize, y: usize, cell: Cell) {
         assert!(x < self.size);
         assert!(y < self.size);
         assert!(cell != Cell::Empty);
@@ -87,7 +84,16 @@ mod tests {
         field.set(0, 2, Cell::O);
         field.set(2, 0, Cell::X);
 
-        assert_eq!(vec![Cell::X, Cell::Empty, Cell::O, Cell::Empty, Cell::O, Cell::Empty, Cell::X, Cell::Empty, Cell::X], field.cells);
+        assert_eq!(vec![Cell::X,
+                        Cell::Empty,
+                        Cell::O,
+                        Cell::Empty,
+                        Cell::O,
+                        Cell::Empty,
+                        Cell::X,
+                        Cell::Empty,
+                        Cell::X],
+                   field.cells);
     }
 
     #[test]
