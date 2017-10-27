@@ -1,37 +1,37 @@
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Cell {
+pub enum Field {
     Empty,
     X,
     O,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Field {
+pub struct Board {
     size: usize,
-    cells: Vec<Cell>,
+    fields: Vec<Field>,
 }
 
-impl Field {
-    pub fn new(size: usize) -> Field {
-        Field {
+impl Board {
+    pub fn new(size: usize) -> Board {
+        Board {
             size,
-            cells: vec![Cell::Empty; size * size],
+            fields: vec![Field::Empty; size * size],
         }
     }
 
-    pub fn set(&mut self, x: usize, y: usize, cell: Cell) {
+    pub fn set(&mut self, x: usize, y: usize, field: Field) {
         assert!(x < self.size);
         assert!(y < self.size);
-        assert!(cell != Cell::Empty);
+        assert!(field != Field::Empty);
 
-        self.cells[x * self.size + y] = cell;
+        self.fields[x * self.size + y] = field;
     }
 
-    pub fn get(&self, x: usize, y: usize) -> Cell {
+    pub fn get(&self, x: usize, y: usize) -> Field {
         assert!(x < self.size);
         assert!(y < self.size);
 
-        self.cells[x * self.size + y]
+        self.fields[x * self.size + y]
     }
 }
 
@@ -40,99 +40,99 @@ mod tests {
     use super::*;
 
     #[test]
-    fn field_new() {
-        let field = Field::new(3);
+    fn board_new() {
+        let board = Board::new(3);
 
-        assert_eq!(3, field.size);
-        assert_eq!(vec![Cell::Empty; 9], field.cells);
+        assert_eq!(3, board.size);
+        assert_eq!(vec![Field::Empty; 9], board.fields);
     }
 
     #[test]
-    fn field_get_new() {
-        let field = Field::new(3);
+    fn board_get_new() {
+        let board = Board::new(3);
 
         for x in 0..3 {
             for y in 0..3 {
-                assert_eq!(Cell::Empty, field.get(x, y));
+                assert_eq!(Field::Empty, board.get(x, y));
             }
         }
     }
 
     #[test]
     #[should_panic]
-    fn field_get_x_oob() {
-        let field = Field::new(3);
+    fn board_get_x_oob() {
+        let board = Board::new(3);
 
-        field.get(3, 0);
+        board.get(3, 0);
     }
 
     #[test]
     #[should_panic]
-    fn field_get_y_oob() {
-        let field = Field::new(3);
+    fn board_get_y_oob() {
+        let board = Board::new(3);
 
-        field.get(0, 3);
+        board.get(0, 3);
     }
 
     #[test]
-    fn field_set() {
-        let mut field = Field::new(3);
+    fn board_set() {
+        let mut board = Board::new(3);
 
-        field.set(0, 0, Cell::X);
-        field.set(1, 1, Cell::O);
-        field.set(2, 2, Cell::X);
-        field.set(0, 2, Cell::O);
-        field.set(2, 0, Cell::X);
+        board.set(0, 0, Field::X);
+        board.set(1, 1, Field::O);
+        board.set(2, 2, Field::X);
+        board.set(0, 2, Field::O);
+        board.set(2, 0, Field::X);
 
-        assert_eq!(vec![Cell::X,
-                        Cell::Empty,
-                        Cell::O,
-                        Cell::Empty,
-                        Cell::O,
-                        Cell::Empty,
-                        Cell::X,
-                        Cell::Empty,
-                        Cell::X],
-                   field.cells);
+        assert_eq!(vec![Field::X,
+                        Field::Empty,
+                        Field::O,
+                        Field::Empty,
+                        Field::O,
+                        Field::Empty,
+                        Field::X,
+                        Field::Empty,
+                        Field::X],
+                   board.fields);
     }
 
     #[test]
-    fn field_set_get() {
-        let mut field = Field::new(3);
+    fn board_set_get() {
+        let mut board = Board::new(3);
 
-        field.set(0, 0, Cell::X);
-        assert_eq!(Cell::X, field.get(0, 0));
-        field.set(1, 1, Cell::O);
-        assert_eq!(Cell::O, field.get(1, 1));
-        field.set(2, 2, Cell::X);
-        assert_eq!(Cell::X, field.get(2, 2));
-        field.set(0, 2, Cell::O);
-        assert_eq!(Cell::O, field.get(0, 2));
-        field.set(2, 0, Cell::X);
-        assert_eq!(Cell::X, field.get(2, 0));
-    }
-
-    #[test]
-    #[should_panic]
-    fn field_set_x_oob() {
-        let mut field = Field::new(3);
-
-        field.set(3, 0, Cell::X);
+        board.set(0, 0, Field::X);
+        assert_eq!(Field::X, board.get(0, 0));
+        board.set(1, 1, Field::O);
+        assert_eq!(Field::O, board.get(1, 1));
+        board.set(2, 2, Field::X);
+        assert_eq!(Field::X, board.get(2, 2));
+        board.set(0, 2, Field::O);
+        assert_eq!(Field::O, board.get(0, 2));
+        board.set(2, 0, Field::X);
+        assert_eq!(Field::X, board.get(2, 0));
     }
 
     #[test]
     #[should_panic]
-    fn field_set_y_oob() {
-        let mut field = Field::new(3);
+    fn board_set_x_oob() {
+        let mut board = Board::new(3);
 
-        field.set(0, 3, Cell::X);
+        board.set(3, 0, Field::X);
     }
 
     #[test]
     #[should_panic]
-    fn field_set_empty() {
-        let mut field = Field::new(3);
+    fn board_set_y_oob() {
+        let mut board = Board::new(3);
 
-        field.set(0, 0, Cell::Empty);
+        board.set(0, 3, Field::X);
+    }
+
+    #[test]
+    #[should_panic]
+    fn board_set_empty() {
+        let mut board = Board::new(3);
+
+        board.set(0, 0, Field::Empty);
     }
 }
