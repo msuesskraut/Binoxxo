@@ -7,27 +7,30 @@ pub enum PossibleMove {
     TwoMoves,
 }
 
-pub fn calc_possible_move(board: &Board, x : usize, y : usize) -> PossibleMove {
+pub fn calc_possible_move(board: &Board, x: usize, y: usize) -> PossibleMove {
     if Field::Empty == board.get(x, y) {
         PossibleMove::TwoMoves
-    }
-    else {
+    } else {
         PossibleMove::NoMove
     }
 }
 
-pub fn is_valid_move(board: &Board, x : usize, y : usize) -> bool {
+pub fn is_valid_move(board: &Board, x: usize, y: usize) -> bool {
     let current = board.get(x, y);
     let size = board.get_size();
     assert!(Field::Empty != current);
 
     let three_up = y > 1 && current == board.get(x, y - 2) && current == board.get(x, y - 1);
-    let three_down = y < size - 2 && current == board.get(x, y + 1) && current == board.get(x, y + 2);
-    let three_middle = y > 0 && y < size - 1 && current == board.get(x, y - 1) && current == board.get(x, y + 1);
+    let three_down = y < size - 2 && current == board.get(x, y + 1) &&
+                     current == board.get(x, y + 2);
+    let three_middle = y > 0 && y < size - 1 && current == board.get(x, y - 1) &&
+                       current == board.get(x, y + 1);
 
     let three_left = x > 1 && current == board.get(x - 2, y) && current == board.get(x - 1, y);
-    let three_right = x < size - 2 && current == board.get(x + 1, y) && current == board.get(x + 2, y);
-    let three_center = x > 0 && x < size - 1 && current == board.get(x - 1, y) && current == board.get(x + 1, y);
+    let three_right = x < size - 2 && current == board.get(x + 1, y) &&
+                      current == board.get(x + 2, y);
+    let three_center = x > 0 && x < size - 1 && current == board.get(x - 1, y) &&
+                       current == board.get(x + 1, y);
 
     !three_up && !three_down && !three_middle && !three_left && !three_right && !three_center
 }
@@ -94,5 +97,15 @@ mod tests {
         assert_eq!(false, is_valid_move(&board, 1, 0));
         assert_eq!(false, is_valid_move(&board, 1, 1));
         assert_eq!(false, is_valid_move(&board, 1, 2));
+    }
+
+    #[test]
+    fn todo_not_more_than_half_the_field_per_column() {
+        assert!(false);
+    }
+
+    #[test]
+    fn todo_not_more_than_half_the_field_per_row() {
+        assert!(false);
     }
 }

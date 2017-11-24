@@ -129,10 +129,7 @@ mod tests {
         board.set(0, 0, Field::X);
         board.set(1, 1, Field::O);
 
-        assert_eq!(vec![Field::X,
-                        Field::Empty,
-                        Field::Empty,
-                        Field::O],
+        assert_eq!(vec![Field::X, Field::Empty, Field::Empty, Field::O],
                    board.fields);
     }
 
