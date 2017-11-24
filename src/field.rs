@@ -35,6 +35,10 @@ impl Board {
 
         self.fields[x * self.size + y]
     }
+
+    pub fn get_size(&self) -> usize {
+        self.size
+    }
 }
 
 #[allow(unused_macros)]

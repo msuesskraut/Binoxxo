@@ -18,13 +18,18 @@ pub fn calc_possible_move(board: &Board, x : usize, y : usize) -> PossibleMove {
 
 pub fn is_valid_move(board: &Board, x : usize, y : usize) -> bool {
     let current = board.get(x, y);
+    let size = board.get_size();
+    assert!(Field::Empty != current);
 
-    if y > 1 && current == board.get(x, y - 2) && current == board.get(x, y - 1) {
-        false
-    }
-    else {
-        true
-    }
+    let three_up = y > 1 && current == board.get(x, y - 2) && current == board.get(x, y - 1);
+    let three_down = y < size - 2 && current == board.get(x, y + 1) && current == board.get(x, y + 2);
+    let three_middle = y > 0 && y < size - 1 && current == board.get(x, y - 1) && current == board.get(x, y + 1);
+
+    let three_left = x > 1 && current == board.get(x - 2, y) && current == board.get(x - 1, y);
+    let three_right = x < size - 2 && current == board.get(x + 1, y) && current == board.get(x + 2, y);
+    let three_center = x > 0 && x < size - 1 && current == board.get(x - 1, y) && current == board.get(x + 1, y);
+
+    !three_up && !three_down && !three_middle && !three_left && !three_right && !three_center
 }
 
 #[cfg(test)]
@@ -64,14 +69,30 @@ mod tests {
     }
 
     #[test]
-    fn x_with_adjacent_xx_is_invalid() {
+    fn x_with_adjacent_xx_is_invalid_horizontally() {
         let board = board!(4,
-            X E E E
-            X E E E
-            X E E E
+            E E E E
+            X X X E
+            E E E E
             E E E E
         );
 
-        assert_eq!(false, is_valid_move(&board, 0, 2));
+        assert_eq!(false, is_valid_move(&board, 0, 1));
+        assert_eq!(false, is_valid_move(&board, 1, 1));
+        assert_eq!(false, is_valid_move(&board, 2, 1));
+    }
+
+    #[test]
+    fn x_with_adjacent_xx_is_invalid_vertically() {
+        let board = board!(4,
+            E X E E
+            E X E E
+            E X E E
+            E E E E
+        );
+
+        assert_eq!(false, is_valid_move(&board, 1, 0));
+        assert_eq!(false, is_valid_move(&board, 1, 1));
+        assert_eq!(false, is_valid_move(&board, 1, 2));
     }
 }
