@@ -44,8 +44,11 @@ impl Board {
 #[allow(unused_macros)]
 macro_rules! board {
     ($size : expr, $( $i : ident )* ) => {{
+        #[allow(unused_imports)]
         use self::Field::X;
+        #[allow(unused_imports)]
         use self::Field::O;
+        #[allow(unused_imports)]
         use self::Field::Empty as E;
         let size = $size;
         let mut board = Board::new(size);
