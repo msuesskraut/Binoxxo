@@ -88,6 +88,38 @@ fn is_unique_column(board: &Board, x: usize) -> bool {
     }
 }
 
+fn calc_row_siganture(board: &Board, y: usize) -> Option<i64> {
+    let mut sig = 0;
+    let mut power_of_2 = 1;
+    for x in 0..board.get_size() {
+        match board.get(x, y) {
+            Field::X => sig += power_of_2,
+            Field::O => (),
+            Field::Empty => return None,
+        }
+        power_of_2 *= 2;
+    }
+    return Some(sig);
+}
+
+fn is_unique_row(board: &Board, y: usize) -> bool {
+    match calc_row_siganture(board, y) {
+        Some(reference) => {
+            (0..board.get_size())
+                .filter(|col| *col != y)
+                .map(|col| calc_row_siganture(board, col))
+                .filter(|sig| *sig != Some(reference))
+                .count() > 0
+        }
+        None => true,
+    }
+}
+
+pub fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
+    is_valid_pair_rule(&board, x, y) && is_valid_colum(&board, x, y) &&
+    is_valid_row(&board, x, y) && is_unique_row(&board, y) && is_unique_column(&board, x)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -271,5 +303,59 @@ mod tests {
 
         assert_eq!(true, is_unique_column(&board, 0));
         assert_eq!(true, is_unique_column(&board, 1));
+    }
+
+    #[test]
+    fn calc_row_siganture_of_empty_row() {
+        let board = board!(4,
+            E E E E
+            O X E E
+            O O O O
+            O X O X
+        );
+
+        assert_eq!(None, calc_row_siganture(&board, 0));
+        assert_eq!(None, calc_row_siganture(&board, 1));
+    }
+
+    #[test]
+    fn calc_row_siganture_of_non_empty_row() {
+        let board = board!(4,
+            O O X X
+            O X O X
+            O O O X
+            X X X X
+        );
+
+        assert_eq!(Some(12), calc_row_siganture(&board, 0));
+        assert_eq!(Some(10), calc_row_siganture(&board, 1));
+        assert_eq!(Some(8), calc_row_siganture(&board, 2));
+        assert_eq!(Some(15), calc_row_siganture(&board, 3));
+    }
+    #[test]
+    fn unique_row() {
+        let board = board!(2,
+            X O
+            O X
+        );
+
+        assert_eq!(true, is_unique_row(&board, 0));
+        assert_eq!(true, is_unique_row(&board, 1));
+    }
+
+    #[test]
+    fn valid_move() {
+        let board = board!(4,
+            O X X O
+            X O O X
+            X X O O
+            O O X X
+        );
+
+        for x in 0..4 {
+            for y in 0..4 {
+                assert_eq!(true, is_move_valid(&board, x, y));
+            }
+        }
     }
 }
