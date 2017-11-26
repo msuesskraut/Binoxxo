@@ -122,16 +122,13 @@ fn calc_possible_move(board: &mut Board, x: usize, y: usize) -> PossibleMove {
         board.clear(x, y);
         if x_possible && y_possible {
             PossibleMove::TwoMoves(x, y)
-        }
-        else {
+        } else {
             if x_possible {
                 PossibleMove::OneMove(x, y, Field::X)
-            }
-            else {
+            } else {
                 if y_possible {
                     PossibleMove::OneMove(x, y, Field::O)
-                }
-                else {
+                } else {
                     PossibleMove::NoMove
                 }
             }
@@ -185,7 +182,8 @@ mod tests {
             O O X X
             O X X O
             E E X O
-        ), board);
+        ),
+                   board);
     }
 
     #[test]
@@ -203,6 +201,7 @@ mod tests {
         assert!(possible_moves.contains(&PossibleMove::OneMove(0, 3, Field::X)));
         assert!(possible_moves.contains(&PossibleMove::NoMove));
     }
+
     #[test]
     fn move_not_possible_for_set_field() {
         let mut board = board!(2,
@@ -222,7 +221,8 @@ mod tests {
 
         for x in 0..2 {
             for y in 0..2 {
-                assert_eq!(PossibleMove::TwoMoves(x, y), calc_possible_move(&mut board, x, y));
+                assert_eq!(PossibleMove::TwoMoves(x, y),
+                           calc_possible_move(&mut board, x, y));
             }
         }
     }
@@ -234,7 +234,8 @@ mod tests {
             O E
         );
 
-        assert_eq!(PossibleMove::OneMove(1, 1, Field::X), calc_possible_move(&mut board, 1, 1));
+        assert_eq!(PossibleMove::OneMove(1, 1, Field::X),
+                   calc_possible_move(&mut board, 1, 1));
     }
 
     #[test]
@@ -246,7 +247,8 @@ mod tests {
             X O O X
         );
 
-        assert_eq!(PossibleMove::OneMove(0, 0, Field::O), calc_possible_move(&mut board, 0, 0));
+        assert_eq!(PossibleMove::OneMove(0, 0, Field::O),
+                   calc_possible_move(&mut board, 0, 0));
     }
 
     #[test]
