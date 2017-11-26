@@ -1,20 +1,5 @@
 use field::{Field, Board};
 
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub enum PossibleMove {
-    NoMove,
-    OneMove(Field),
-    TwoMoves,
-}
-
-pub fn calc_possible_move(board: &Board, x: usize, y: usize) -> PossibleMove {
-    if Field::Empty == board.get(x, y) {
-        PossibleMove::TwoMoves
-    } else {
-        PossibleMove::NoMove
-    }
-}
-
 fn is_valid_pair_rule(board: &Board, x: usize, y: usize) -> bool {
     let current = board.get(x, y);
     let size = board.get_size();
@@ -120,28 +105,78 @@ pub fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
     is_valid_row(&board, x, y) && is_unique_row(&board, y) && is_unique_column(&board, x)
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PossibleMove {
+    NoMove,
+    OneMove(Field),
+    TwoMoves,
+}
+
+pub fn calc_possible_move(board: &mut Board, x: usize, y: usize) -> PossibleMove {
+    if Field::Empty == board.get(x, y) {
+        board.set(x, y, Field::X);
+        let x_possible = is_move_valid(board, x, y);
+        board.clear(x, y);
+        board.set(x, y, Field::O);
+        let y_possible = is_move_valid(board, x, y);
+        board.clear(x, y);
+        if x_possible && y_possible {
+            PossibleMove::TwoMoves
+        }
+        else {
+            if x_possible {
+                PossibleMove::OneMove(Field::X)
+            }
+            else {
+                if y_possible {
+                    PossibleMove::OneMove(Field::O)
+                }
+                else {
+                    PossibleMove::NoMove
+                }
+            }
+        }
+    } else {
+        PossibleMove::NoMove
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn move_not_possible_for_set_field() {
-        let board = board!(2,
+        let mut board = board!(2,
             X E
             E E
         );
 
-        assert_eq!(PossibleMove::NoMove, calc_possible_move(&board, 0, 0));
+        assert_eq!(PossibleMove::NoMove, calc_possible_move(&mut board, 0, 0));
     }
 
     #[test]
-    fn two_options_for_empty_field() {
-        let board = board!(2,
+    fn two_options_for_empty_board() {
+        let mut board = board!(2,
             E E
             E E
         );
 
-        assert_eq!(PossibleMove::TwoMoves, calc_possible_move(&board, 0, 0));
+        for x in 0..2 {
+            for y in 0..2 {
+                assert_eq!(PossibleMove::TwoMoves, calc_possible_move(&mut board, x, y));
+            }
+        }
+    }
+
+    #[test]
+    fn only_option_x_possible() {
+        let mut board = board!(2,
+            O O
+            O E
+        );
+
+        assert_eq!(PossibleMove::OneMove(Field::X), calc_possible_move(&mut board, 1, 1));
     }
 
     #[test]

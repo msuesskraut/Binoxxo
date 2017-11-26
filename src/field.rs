@@ -21,6 +21,14 @@ impl Board {
         }
     }
 
+    pub fn clear(&mut self, x: usize, y: usize) {
+        assert!(x < self.size);
+        assert!(y < self.size);
+        assert!(Field::Empty != self.fields[x * self.size + y]);
+
+        self.fields[x * self.size + y] = Field::Empty;
+    }
+
     pub fn set(&mut self, x: usize, y: usize, field: Field) {
         assert!(x < self.size);
         assert!(y < self.size);
@@ -172,5 +180,50 @@ mod tests {
         let mut board = Board::new(2);
 
         board.set(0, 0, Field::Empty);
+    }
+
+    #[test]
+    fn clear_field() {
+    	let mut board = board!(2,
+            X O
+            O X
+        );
+
+        board.clear(0, 0);
+
+        assert_eq!(Field::Empty, board.get(0, 0));
+    }
+
+    #[test]
+    #[should_panic]
+    fn clear_x_oob_panics() {
+    	let mut board = board!(2,
+            X O
+            O X
+        );
+
+        board.clear(2, 0);
+    }
+
+    #[test]
+    #[should_panic]
+    fn clear_y_oob_panics() {
+    	let mut board = board!(2,
+            X O
+            O X
+        );
+
+        board.clear(0, 2);
+    }
+
+    #[test]
+    #[should_panic]
+    fn clear_already_empty_field_panics() {
+    	let mut board = board!(2,
+            E O
+            O X
+        );
+
+        board.clear(0, 0);
     }
 }
