@@ -57,7 +57,7 @@ fn calc_column_siganture(board: &Board, x: usize) -> Option<i64> {
         }
         power_of_2 *= 2;
     }
-    return Some(sig);
+    Some(sig)
 }
 
 fn is_unique_column(board: &Board, x: usize) -> bool {
@@ -84,7 +84,7 @@ fn calc_row_siganture(board: &Board, y: usize) -> Option<i64> {
         }
         power_of_2 *= 2;
     }
-    return Some(sig);
+    Some(sig)
 }
 
 fn is_unique_row(board: &Board, y: usize) -> bool {
@@ -101,8 +101,8 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
 }
 
 fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
-    is_valid_pair_rule(&board, x, y) && is_valid_colum(&board, x, y) &&
-    is_valid_row(&board, x, y) && is_unique_row(&board, y) && is_unique_column(&board, x)
+    is_valid_pair_rule(board, x, y) && is_valid_colum(board, x, y) &&
+    is_valid_row(board, x, y) && is_unique_row(board, y) && is_unique_column(board, x)
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -122,16 +122,12 @@ fn calc_possible_move(board: &mut Board, x: usize, y: usize) -> PossibleMove {
         board.clear(x, y);
         if x_possible && y_possible {
             PossibleMove::TwoMoves(x, y)
+        } else if x_possible {
+            PossibleMove::OneMove(x, y, Field::X)
+        } else if y_possible {
+            PossibleMove::OneMove(x, y, Field::O)
         } else {
-            if x_possible {
-                PossibleMove::OneMove(x, y, Field::X)
-            } else {
-                if y_possible {
-                    PossibleMove::OneMove(x, y, Field::O)
-                } else {
-                    PossibleMove::NoMove
-                }
-            }
+            PossibleMove::NoMove
         }
     } else {
         PossibleMove::NoMove
@@ -203,6 +199,20 @@ mod tests {
     }
 
     #[test]
+    fn next_to_a_single_x_are_two_moves_possible() {
+        let mut board = board!(4,
+            X E E E
+            E E E E
+            E E E E
+            E E E E
+        );
+
+        let possible_moves = calc_possible_moves(&mut board);
+
+        assert!(possible_moves.contains(&PossibleMove::TwoMoves(1, 0)));
+    }
+
+    #[test]
     fn move_not_possible_for_set_field() {
         let mut board = board!(2,
             X E
@@ -239,7 +249,7 @@ mod tests {
     }
 
     #[test]
-    fn only_option_O_possible() {
+    fn only_option_o_possible() {
         let mut board = board!(4,
             E X X O
             X X O O
