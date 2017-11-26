@@ -5,9 +5,9 @@ use rand::{Rng, thread_rng};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Move {
-    field: Field,
-    x: usize,
-    y: usize,
+    pub field: Field,
+    pub x: usize,
+    pub y: usize,
 }
 
 pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
