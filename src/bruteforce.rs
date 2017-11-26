@@ -1,6 +1,6 @@
 use field::{Field, Board};
 
-use rand::random;
+use rand::{Rng, thread_rng};
 
 fn is_valid_pair_rule(board: &Board, x: usize, y: usize) -> bool {
     let current = board.get(x, y);
@@ -166,16 +166,17 @@ pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
                         _ => false,
                     })
             .collect::<Vec<&PossibleMove>>();
+        let mut rng = thread_rng();
 
         if !single_options.is_empty() {
-            match *single_options[random::<usize>() % single_options.len()] {
-                PossibleMove::OneMove(x, y, field) => Some(Move { field, x, y }),
+            match rng.choose(&single_options) {
+                Some(&&PossibleMove::OneMove(x, y, field)) => Some(Move { field, x, y }),
                 _ => unreachable!(),
             }
         } else {
-            match possible_moves[random::<usize>() % possible_moves.len()] {
-                PossibleMove::TwoMoves(x, y) => {
-                    let field = if random::<bool>() { Field::X } else { Field::O };
+            match rng.choose(possible_moves) {
+                Some(&PossibleMove::TwoMoves(x, y)) => {
+                    let field = if rng.gen() { Field::X } else { Field::O };
                     Some(Move { field, x, y })
                 }
                 _ => unreachable!(),
