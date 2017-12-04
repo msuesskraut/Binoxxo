@@ -66,8 +66,8 @@ fn is_unique_column(board: &Board, x: usize) -> bool {
             (0..board.get_size())
                 .filter(|col| *col != x)
                 .map(|col| calc_column_siganture(board, col))
-                .filter(|sig| *sig != Some(reference))
-                .count() > 0
+                .filter(|sig| *sig == Some(reference))
+                .count() == 0
         }
         None => true,
     }
@@ -91,10 +91,10 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
     match calc_row_siganture(board, y) {
         Some(reference) => {
             (0..board.get_size())
-                .filter(|col| *col != y)
-                .map(|col| calc_row_siganture(board, col))
-                .filter(|sig| *sig != Some(reference))
-                .count() > 0
+                .filter(|row| *row != y)
+                .map(|row| calc_row_siganture(board, row))
+                .filter(|sig| *sig == Some(reference))
+                .count() == 0
         }
         None => true,
     }
@@ -322,5 +322,38 @@ mod tests {
                 assert_eq!(true, is_move_valid(&board, x, y));
             }
         }
+    }
+
+    #[test]
+    fn regression_board_01() {
+        let board = board!(6,
+            X O X O O X
+            O X O X X O
+            X O X O O X
+            O X O X X O
+            X X O X O O
+            O O X O X X
+        );
+
+        assert_eq!(false, is_unique_column(&board, 2));
+        assert_eq!(false, is_unique_column(&board, 5));
+    }
+
+    #[test]
+    fn regression_board_02() {
+        let board = board!(6,
+            X O X O O X
+            O X O X X O
+            X O X O O X
+            O X O X X O
+            X X O X O O
+            O O X O X X
+        );
+
+        assert_eq!(false, is_unique_row(&board, 0));
+        assert_eq!(false, is_unique_row(&board, 2));
+
+        assert_eq!(false, is_unique_row(&board, 1));
+        assert_eq!(false, is_unique_row(&board, 3));
     }
 }
