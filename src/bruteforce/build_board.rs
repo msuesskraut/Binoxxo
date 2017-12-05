@@ -1,104 +1,79 @@
-use field::{Board, Field};
-use bruteforce::possible_move::{PossibleMove, calc_possible_moves};
+use field::Board;
+use bruteforce::possible_move::calc_possible_moves;
+use bruteforce::choose_move::{Move, select_next_move};
 
 use rand::{Rng, thread_rng};
 
-fn is_board_full(board : &Board) -> bool {
-    let size = board.get_size();
-    for x in 0..size {
-        for y in 0..size {
-            if Field::Empty == board.get(x, y) {
-                return false;
-            }
-        }
-    }
-
-    true
+struct Game {
+    board: Board,
+    moves: Vec<Move>,
 }
 
-fn create_board_recursive(board : &mut Board) -> bool {
-    if is_board_full(board) {
-        return true;
-    }
-
-    let moves = calc_possible_moves(board);
-    if moves.contains(&PossibleMove::NoMove) {
-        return false;
-    }
-
-    let mut rng = thread_rng();
-    let mut one_moves = moves.iter().filter(|m| match *m {
-        &PossibleMove::OneMove(_, _, _) => true,
-        _ => false,
-    }).map(|m| match *m {
-        PossibleMove::OneMove(x, y, field) => (x, y, field),
-        _ => unreachable!(),
-    }).collect::<Vec<(usize, usize, Field)>>();
-    rng.shuffle(&mut one_moves);
-    for (x, y, field) in one_moves {
-        board.set(x, y, field);
-        if create_board_recursive(board) {
-            return true;
+impl Game {
+    pub fn new(size: usize) -> Game {
+        Game {
+            board : Board::new(size),
+            moves : Vec::new(),
         }
-        board.clear(x, y);
     }
 
-    let mut two_moves = moves.iter().filter(|m| match *m {
-        &PossibleMove::TwoMoves(_, _) => true,
-        _ => false,
-    }).map(|m| match *m {
-        PossibleMove::TwoMoves(x, y) => (x, y),
-        _ => unreachable!(),
-    }).collect::<Vec<(usize, usize)>>();
-    rng.shuffle(&mut two_moves);
-    for (x, y) in two_moves {
-        let mut field_order = vec![Field::X, Field::O];
-        rng.shuffle(&mut field_order);
-        for field in field_order {
-            board.set(x, y, field);
-            if create_board_recursive(board) {
-                return true;
+    pub fn is_full(&self) -> bool {
+        let size = self.board.get_size();
+        self.moves.len() == (size * size)
+    }
+
+    fn new_move(&mut self) -> bool {
+        assert!(!self.is_full());
+
+        let possible_moves = calc_possible_moves(&mut self.board);
+        if let Some(m) = select_next_move(&possible_moves) {
+            self.board.set(m.x, m.y, m.field);
+            self.moves.push(m);
+            true
+        }
+        else {
+            false
+        }
+    }
+
+    fn undo_moves(&mut self, number:usize) {
+        assert!(number <= self.moves.len());
+
+        for _ in 0..number {
+            let m = self.moves.pop().unwrap();
+            self.board.clear(m.x, m.y);
+        }
+    }
+
+    pub fn build_board(size: usize, max_tries: usize) -> Option<Board> {
+        let mut game = Game::new(size);
+        let mut rng = thread_rng();
+
+        for _ in 0..max_tries {
+            if game.is_full() {
+                return Some(game.board)
+            }
+            if !game.new_move() {
+                let max = game.moves.len() - 1;
+                let number_of_moves = rng.gen_range(1, max);
+                game.undo_moves(number_of_moves);                
             }
         }
-        board.clear(x, y);
-    }
 
-    false
+        if game.is_full() {
+            Some(game.board)
+        }
+        else {
+            None
+        }
+    }
 }
 
 pub fn create_board(size:usize) -> Board {
-    let mut board = Board::new(size);
-
-    let ok = create_board_recursive(&mut board);
-
-    if !ok {
-        panic!("No board found for size {}", size);
+    let max_tries = size * size * 100;
+    if let Some(board) = Game::build_board(size, max_tries) {
+        return board;
     }
 
-    board
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn detect_full_board() {
-        let board = board!(2,
-            X O
-            O X
-        );
-
-        assert_eq!(true, is_board_full(&board));
-    }
-
-    #[test]
-    fn detect_board_with_empty_fields() {
-        let board = board!(2,
-            X E
-            O X
-        );
-
-        assert_eq!(false, is_board_full(&board));
-    }
+    panic!("No board found for size {} after {} tries", size, max_tries);
 }
