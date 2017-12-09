@@ -3,7 +3,7 @@ extern crate binoxxo;
 use binoxxo::field::Field;
 
 fn main() {
-    let size:usize = 10;
+    let size: usize = 10;
     let board = binoxxo::bruteforce::build_board::create_puzzle_board(size);
 
     for y in 0..size {

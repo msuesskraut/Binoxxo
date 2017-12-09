@@ -12,8 +12,8 @@ struct Game {
 impl Game {
     pub fn new(size: usize) -> Game {
         Game {
-            board : Board::new(size),
-            moves : Vec::new(),
+            board: Board::new(size),
+            moves: Vec::new(),
         }
     }
 
@@ -30,13 +30,12 @@ impl Game {
             self.board.set(m.x, m.y, m.field);
             self.moves.push(m);
             true
-        }
-        else {
+        } else {
             false
         }
     }
 
-    fn undo_moves(&mut self, number:usize) {
+    fn undo_moves(&mut self, number: usize) {
         assert!(number <= self.moves.len());
 
         for _ in 0..number {
@@ -51,21 +50,16 @@ impl Game {
 
         for _ in 0..max_tries {
             if game.is_full() {
-                return Some(game)
+                return Some(game);
             }
             if !game.new_move() {
                 let max = game.moves.len() - 1;
                 let number_of_moves = rng.gen_range(1, max);
-                game.undo_moves(number_of_moves);                
+                game.undo_moves(number_of_moves);
             }
         }
 
-        if game.is_full() {
-            Some(game)
-        }
-        else {
-            None
-        }
+        if game.is_full() { Some(game) } else { None }
     }
 
     pub fn build_full_board(size: usize, max_tries: usize) -> Option<Board> {
@@ -89,7 +83,7 @@ impl Game {
     }
 }
 
-pub fn create_full_board(size:usize) -> Board {
+pub fn create_full_board(size: usize) -> Board {
     let max_tries = size * size * 100;
     if let Some(board) = Game::build_full_board(size, max_tries) {
         return board;
@@ -98,7 +92,7 @@ pub fn create_full_board(size:usize) -> Board {
     panic!("No board found for size {} after {} tries", size, max_tries);
 }
 
-pub fn create_puzzle_board(size:usize) -> Board {
+pub fn create_puzzle_board(size: usize) -> Board {
     let max_tries = size * size * 100;
     if let Some(board) = Game::build_puzzle_board(size, max_tries) {
         return board;

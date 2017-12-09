@@ -94,7 +94,8 @@ mod tests {
 
     #[test]
     fn build_board_with_macro() {
-        let board = board!(2,
+        let board =
+            board!(2,
             X O
             E O
         );
@@ -140,8 +141,10 @@ mod tests {
         board.set(0, 0, Field::X);
         board.set(1, 1, Field::O);
 
-        assert_eq!(vec![Field::X, Field::Empty, Field::Empty, Field::O],
-                   board.fields);
+        assert_eq!(
+            vec![Field::X, Field::Empty, Field::Empty, Field::O],
+            board.fields
+        );
     }
 
     #[test]
@@ -184,7 +187,8 @@ mod tests {
 
     #[test]
     fn clear_field() {
-        let mut board = board!(2,
+        let mut board =
+            board!(2,
             X O
             O X
         );
@@ -197,7 +201,8 @@ mod tests {
     #[test]
     #[should_panic]
     fn clear_x_oob_panics() {
-        let mut board = board!(2,
+        let mut board =
+            board!(2,
             X O
             O X
         );
@@ -208,7 +213,8 @@ mod tests {
     #[test]
     #[should_panic]
     fn clear_y_oob_panics() {
-        let mut board = board!(2,
+        let mut board =
+            board!(2,
             X O
             O X
         );
@@ -219,7 +225,8 @@ mod tests {
     #[test]
     #[should_panic]
     fn clear_already_empty_field_panics() {
-        let mut board = board!(2,
+        let mut board =
+            board!(2,
             E O
             O X
         );
