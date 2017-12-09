@@ -4,10 +4,17 @@ use bruteforce::possible_move::PossibleMove;
 use rand::{Rng, thread_rng};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
+pub enum MoveSelection {
+    Random,
+    Fixed
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Move {
     pub field: Field,
     pub x: usize,
     pub y: usize,
+    pub was_random: MoveSelection,
 }
 
 pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
@@ -25,14 +32,18 @@ pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
 
         if !single_options.is_empty() {
             match rng.choose(&single_options) {
-                Some(&&PossibleMove::OneMove(x, y, field)) => Some(Move { field, x, y }),
+                Some(&&PossibleMove::OneMove(x, y, field)) => {
+                    let was_random = MoveSelection::Fixed;
+                    Some(Move { field, x, y, was_random })
+                },
                 _ => unreachable!(),
             }
         } else {
             match rng.choose(possible_moves) {
                 Some(&PossibleMove::TwoMoves(x, y)) => {
                     let field = if rng.gen() { Field::X } else { Field::O };
-                    Some(Move { field, x, y })
+                    let was_random = MoveSelection::Random;
+                    Some(Move { field, x, y, was_random })
                 }
                 _ => unreachable!(),
             }

@@ -1,6 +1,6 @@
 use field::Board;
 use bruteforce::possible_move::calc_possible_moves;
-use bruteforce::choose_move::{Move, select_next_move};
+use bruteforce::choose_move::{Move, MoveSelection, select_next_move};
 
 use rand::{Rng, thread_rng};
 
@@ -45,13 +45,13 @@ impl Game {
         }
     }
 
-    pub fn build_board(size: usize, max_tries: usize) -> Option<Board> {
+    fn build_full_game(size: usize, max_tries: usize) -> Option<Game> {
         let mut game = Game::new(size);
         let mut rng = thread_rng();
 
         for _ in 0..max_tries {
             if game.is_full() {
-                return Some(game.board)
+                return Some(game)
             }
             if !game.new_move() {
                 let max = game.moves.len() - 1;
@@ -61,17 +61,46 @@ impl Game {
         }
 
         if game.is_full() {
-            Some(game.board)
+            Some(game)
         }
         else {
             None
         }
     }
+
+    pub fn build_full_board(size: usize, max_tries: usize) -> Option<Board> {
+        Some(Game::build_full_game(size, max_tries)?.board)
+    }
+
+    pub fn build_puzzle_board(size: usize, max_tries: usize) -> Option<Board> {
+        let game = Game::build_full_game(size, max_tries)?;
+
+        let mut board = game.board;
+        let mut moves = game.moves;
+
+        while let Some(m) = moves.pop() {
+            match m.was_random {
+                MoveSelection::Fixed => board.clear(m.x, m.y),
+                MoveSelection::Random => break,
+            }
+        }
+
+        Some(board)
+    }
 }
 
-pub fn create_board(size:usize) -> Board {
+pub fn create_full_board(size:usize) -> Board {
     let max_tries = size * size * 100;
-    if let Some(board) = Game::build_board(size, max_tries) {
+    if let Some(board) = Game::build_full_board(size, max_tries) {
+        return board;
+    }
+
+    panic!("No board found for size {} after {} tries", size, max_tries);
+}
+
+pub fn create_puzzle_board(size:usize) -> Board {
+    let max_tries = size * size * 100;
+    if let Some(board) = Game::build_puzzle_board(size, max_tries) {
         return board;
     }
 
