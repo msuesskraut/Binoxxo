@@ -5,6 +5,7 @@ authors = ["Martin Suesskraut <martin.suesskraut@gmail.com>"]
 
 [dependencies]
 rand = "0.3"
+printpdf = "0.2"
 
 [dev-dependencies]
 quickcheck = "0.4"
