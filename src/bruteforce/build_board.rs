@@ -66,16 +66,21 @@ impl Game {
         Some(Game::build_full_game(size, max_tries)?.board)
     }
 
-    pub fn build_puzzle_board(size: usize, max_tries: usize) -> Option<Board> {
+    pub fn build_puzzle_board(size: usize, max_tries: usize, guesses: usize) -> Option<Board> {
         let game = Game::build_full_game(size, max_tries)?;
 
         let mut board = game.board;
         let mut moves = game.moves;
+        let mut guesses = guesses;
 
         while let Some(m) = moves.pop() {
             match m.was_random {
                 MoveSelection::Fixed => board.clear(m.x, m.y),
-                MoveSelection::Random => break,
+                MoveSelection::Random => if 0 == guesses {
+                    break;
+                } else {
+                    guesses -= 1;
+                },
             }
         }
 
@@ -92,11 +97,11 @@ pub fn create_full_board(size: usize) -> Board {
     panic!("No board found for size {} after {} tries", size, max_tries);
 }
 
-pub fn create_puzzle_board(size: usize) -> Board {
+pub fn create_puzzle_board(size: usize, guesses: usize) -> Board {
     let max_tries = size * size * 100;
-    if let Some(board) = Game::build_puzzle_board(size, max_tries) {
+    if let Some(board) = Game::build_puzzle_board(size, max_tries, guesses) {
         return board;
     }
 
-    panic!("No board found for size {} after {} tries", size, max_tries);
+    panic!("No board found for size {} with {} guesses after {} tries", size, guesses, max_tries);
 }
