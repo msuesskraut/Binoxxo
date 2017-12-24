@@ -1,4 +1,4 @@
-use field::{Field, Board};
+use field::{Board, Field};
 use bruteforce::rules::is_move_valid;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -48,8 +48,7 @@ mod tests {
 
     #[test]
     fn get_possible_moves_for_all_empty_fields() {
-        let mut board =
-            board!(4,
+        let mut board = board!(4,
             X X E E
             O O X X
             O X X O
@@ -62,8 +61,7 @@ mod tests {
 
     #[test]
     fn get_possible_moves_does_not_change_board() {
-        let mut board =
-            board!(4,
+        let mut board = board!(4,
             X X E E
             O O X X
             O X X O
@@ -84,8 +82,7 @@ mod tests {
 
     #[test]
     fn get_possible_one_moves_for_all_empty_fields() {
-        let mut board =
-            board!(4,
+        let mut board = board!(4,
             X X E E
             O O X X
             O X X O
@@ -93,22 +90,15 @@ mod tests {
         );
 
         let possible_moves = calc_possible_moves(&mut board);
-        assert!(possible_moves.contains(
-            &PossibleMove::OneMove(2, 0, Field::O),
-        ));
-        assert!(possible_moves.contains(
-            &PossibleMove::OneMove(1, 3, Field::O),
-        ));
-        assert!(possible_moves.contains(
-            &PossibleMove::OneMove(0, 3, Field::X),
-        ));
+        assert!(possible_moves.contains(&PossibleMove::OneMove(2, 0, Field::O),));
+        assert!(possible_moves.contains(&PossibleMove::OneMove(1, 3, Field::O),));
+        assert!(possible_moves.contains(&PossibleMove::OneMove(0, 3, Field::X),));
         assert!(possible_moves.contains(&PossibleMove::NoMove));
     }
 
     #[test]
     fn next_to_a_single_x_are_two_moves_possible() {
-        let mut board =
-            board!(4,
+        let mut board = board!(4,
             X E E E
             E E E E
             E E E E
@@ -122,8 +112,7 @@ mod tests {
 
     #[test]
     fn move_not_possible_for_set_field() {
-        let mut board =
-            board!(2,
+        let mut board = board!(2,
             X E
             E E
         );
@@ -133,8 +122,7 @@ mod tests {
 
     #[test]
     fn two_options_for_empty_board() {
-        let mut board =
-            board!(2,
+        let mut board = board!(2,
             E E
             E E
         );
@@ -151,8 +139,7 @@ mod tests {
 
     #[test]
     fn only_option_x_possible() {
-        let mut board =
-            board!(2,
+        let mut board = board!(2,
             O O
             O E
         );
@@ -165,8 +152,7 @@ mod tests {
 
     #[test]
     fn only_option_o_possible() {
-        let mut board =
-            board!(4,
+        let mut board = board!(4,
             E X X O
             X X O O
             O O X X

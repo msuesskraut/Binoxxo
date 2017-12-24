@@ -1,4 +1,4 @@
-use field::{Field, Board};
+use field::{Board, Field};
 
 fn is_valid_pair_rule(board: &Board, x: usize, y: usize) -> bool {
     let current = board.get(x, y);
@@ -6,16 +6,16 @@ fn is_valid_pair_rule(board: &Board, x: usize, y: usize) -> bool {
     assert!(Field::Empty != current);
 
     let three_up = y > 1 && current == board.get(x, y - 2) && current == board.get(x, y - 1);
-    let three_down = y < size - 2 && current == board.get(x, y + 1) &&
-        current == board.get(x, y + 2);
-    let three_middle = y > 0 && y < size - 1 && current == board.get(x, y - 1) &&
-        current == board.get(x, y + 1);
+    let three_down =
+        y < size - 2 && current == board.get(x, y + 1) && current == board.get(x, y + 2);
+    let three_middle =
+        y > 0 && y < size - 1 && current == board.get(x, y - 1) && current == board.get(x, y + 1);
 
     let three_left = x > 1 && current == board.get(x - 2, y) && current == board.get(x - 1, y);
-    let three_right = x < size - 2 && current == board.get(x + 1, y) &&
-        current == board.get(x + 2, y);
-    let three_center = x > 0 && x < size - 1 && current == board.get(x - 1, y) &&
-        current == board.get(x + 1, y);
+    let three_right =
+        x < size - 2 && current == board.get(x + 1, y) && current == board.get(x + 2, y);
+    let three_center =
+        x > 0 && x < size - 1 && current == board.get(x - 1, y) && current == board.get(x + 1, y);
 
     !three_up && !three_down && !three_middle && !three_left && !three_right && !three_center
 }
@@ -101,8 +101,8 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
 }
 
 pub fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
-    is_valid_pair_rule(board, x, y) && is_valid_colum(board, x, y) &&
-        is_valid_row(board, x, y) && is_unique_row(board, y) && is_unique_column(board, x)
+    is_valid_pair_rule(board, x, y) && is_valid_colum(board, x, y) && is_valid_row(board, x, y)
+        && is_unique_row(board, y) && is_unique_column(board, x)
 }
 
 #[cfg(test)]
@@ -111,8 +111,7 @@ mod tests {
 
     #[test]
     fn x_with_adjacent_oo_is_valid() {
-        let board =
-            board!(4,
+        let board = board!(4,
             O E E E
             O E E E
             X E E E
@@ -124,8 +123,7 @@ mod tests {
 
     #[test]
     fn x_with_surounding_oo_is_valid() {
-        let board =
-            board!(4,
+        let board = board!(4,
             X O X E
             E E E E
             E E E E
@@ -137,8 +135,7 @@ mod tests {
 
     #[test]
     fn x_with_adjacent_xx_is_invalid_horizontally() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E E E E
             X X X E
             E E E E
@@ -152,8 +149,7 @@ mod tests {
 
     #[test]
     fn x_with_adjacent_xx_is_invalid_vertically() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E O E E
             E O E E
             E O E E
@@ -167,8 +163,7 @@ mod tests {
 
     #[test]
     fn not_more_than_half_the_field_per_column_valid() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E X E E
             E X E E
             E O E E
@@ -180,8 +175,7 @@ mod tests {
 
     #[test]
     fn not_more_than_half_the_field_per_column_invalid() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E X E E
             E O E E
             E X E E
@@ -193,8 +187,7 @@ mod tests {
 
     #[test]
     fn not_more_than_half_the_field_per_row_valid() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E E E E
             O X X O
             E E E E
@@ -206,8 +199,7 @@ mod tests {
 
     #[test]
     fn not_more_than_half_the_field_per_row_invalid() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E E E E
             O X O O
             E E E E
@@ -219,8 +211,7 @@ mod tests {
 
     #[test]
     fn calc_column_siganture_of_non_empty_column() {
-        let board =
-            board!(4,
+        let board = board!(4,
             O O X X
             O X X X
             O O O X
@@ -235,8 +226,7 @@ mod tests {
 
     #[test]
     fn calc_column_siganture_of_empty_column() {
-        let board =
-            board!(4,
+        let board = board!(4,
             O O E E
             O X X E
             O O O E
@@ -249,8 +239,7 @@ mod tests {
 
     #[test]
     fn unique_column() {
-        let board =
-            board!(2,
+        let board = board!(2,
             X O
             O X
         );
@@ -261,8 +250,7 @@ mod tests {
 
     #[test]
     fn double_column() {
-        let board =
-            board!(2,
+        let board = board!(2,
             X X
             O O
         );
@@ -273,8 +261,7 @@ mod tests {
 
     #[test]
     fn empty_column_is_unique() {
-        let board =
-            board!(2,
+        let board = board!(2,
             E E
             O O
         );
@@ -285,8 +272,7 @@ mod tests {
 
     #[test]
     fn calc_row_siganture_of_empty_row() {
-        let board =
-            board!(4,
+        let board = board!(4,
             E E E E
             O X E E
             O O O O
@@ -299,8 +285,7 @@ mod tests {
 
     #[test]
     fn calc_row_siganture_of_non_empty_row() {
-        let board =
-            board!(4,
+        let board = board!(4,
             O O X X
             O X O X
             O O O X
@@ -314,8 +299,7 @@ mod tests {
     }
     #[test]
     fn unique_row() {
-        let board =
-            board!(2,
+        let board = board!(2,
             X O
             O X
         );
@@ -326,8 +310,7 @@ mod tests {
 
     #[test]
     fn valid_move() {
-        let board =
-            board!(4,
+        let board = board!(4,
             O X X O
             X O O X
             X X O O
@@ -343,8 +326,7 @@ mod tests {
 
     #[test]
     fn regression_board_01() {
-        let board =
-            board!(6,
+        let board = board!(6,
             X O X O O X
             O X O X X O
             X O X O O X
@@ -359,8 +341,7 @@ mod tests {
 
     #[test]
     fn regression_board_02() {
-        let board =
-            board!(6,
+        let board = board!(6,
             X O X O O X
             O X O X X O
             X O X O O X

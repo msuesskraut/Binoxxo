@@ -1,7 +1,7 @@
 use field::Field;
 use bruteforce::possible_move::PossibleMove;
 
-use rand::{Rng, thread_rng};
+use rand::{thread_rng, Rng};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum MoveSelection {
@@ -69,13 +69,11 @@ mod tests {
     fn select_none_if_one_impossible_move_in_list() {
         assert_eq!(
             None,
-            select_next_move(
-                &[
-                    PossibleMove::OneMove(1, 1, Field::X),
-                    PossibleMove::TwoMoves(2, 2),
-                    PossibleMove::NoMove,
-                ],
-            )
+            select_next_move(&[
+                PossibleMove::OneMove(1, 1, Field::X),
+                PossibleMove::TwoMoves(2, 2),
+                PossibleMove::NoMove,
+            ],)
         );
     }
 
@@ -102,9 +100,6 @@ mod tests {
             PossibleMove::TwoMoves(2, 2),
         ];
         let next_move = select_next_move(&possible_moves).unwrap();
-        assert!(possible_moves.contains(&PossibleMove::TwoMoves(
-            next_move.x,
-            next_move.y,
-        )));
+        assert!(possible_moves.contains(&PossibleMove::TwoMoves(next_move.x, next_move.y,)));
     }
 }

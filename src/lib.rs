@@ -1,8 +1,8 @@
 #![feature(stmt_expr_attributes)]
 
-extern crate rand;
 #[cfg(test)]
 extern crate quickcheck;
+extern crate rand;
 
 #[macro_use]
 pub mod field;

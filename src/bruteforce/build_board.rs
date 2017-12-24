@@ -1,8 +1,8 @@
 use field::Board;
 use bruteforce::possible_move::calc_possible_moves;
-use bruteforce::choose_move::{Move, MoveSelection, select_next_move};
+use bruteforce::choose_move::{select_next_move, Move, MoveSelection};
 
-use rand::{Rng, thread_rng};
+use rand::{thread_rng, Rng};
 
 struct Game {
     board: Board,
@@ -59,7 +59,11 @@ impl Game {
             }
         }
 
-        if game.is_full() { Some(game) } else { None }
+        if game.is_full() {
+            Some(game)
+        } else {
+            None
+        }
     }
 
     pub fn build_full_board(size: usize, max_tries: usize) -> Option<Board> {
@@ -103,5 +107,8 @@ pub fn create_puzzle_board(size: usize, guesses: usize) -> Board {
         return board;
     }
 
-    panic!("No board found for size {} with {} guesses after {} tries", size, guesses, max_tries);
+    panic!(
+        "No board found for size {} with {} guesses after {} tries",
+        size, guesses, max_tries
+    );
 }
