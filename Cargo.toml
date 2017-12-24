@@ -10,4 +10,4 @@ if_chain = "0.1.2"
 
 [dev-dependencies]
 quickcheck = "0.5"
-quickcheck_macros = "0.5"
+#quickcheck_macros = "0.5"
