@@ -9,5 +9,5 @@ printpdf = "0.2"
 if_chain = "0.1.2"
 
 [dev-dependencies]
-quickcheck = "0.4"
-quickcheck_macros = "0.4"
+quickcheck = "0.5"
+quickcheck_macros = "0.5"
