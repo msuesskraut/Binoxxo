@@ -2,6 +2,14 @@ extern crate binoxxo;
 
 use binoxxo::field::Field;
 
+fn pause() {
+    use std::io::{stdin, Read};
+
+    println!("Press ENTER to continue...");
+
+    stdin().read(&mut [0u8]).unwrap();
+}
+
 fn main() {
     let size = 10usize;
     let guesses = 15usize;
@@ -18,4 +26,6 @@ fn main() {
         }
         println!("{}", line);
     }
+
+    pause();
 }
