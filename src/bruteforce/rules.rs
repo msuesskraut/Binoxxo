@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use field::{Board, Field};
 
 fn is_valid_pair_rule(board: &Board, x: usize, y: usize) -> bool {
@@ -103,6 +105,45 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
 pub fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
     is_valid_pair_rule(board, x, y) && is_valid_colum(board, x, y) && is_valid_row(board, x, y)
         && is_unique_row(board, y) && is_unique_column(board, x)
+}
+
+fn are_columns_unique(board: &Board) -> bool {
+    let column_sigs = (0..board.get_size())
+        .map(|col| calc_column_siganture(board, col))
+        .collect::<HashSet<Option<i64>>>();
+    column_sigs.len() == board.get_size()
+}
+
+fn are_rows_unique(board: &Board) -> bool {
+    let row_sigs = (0..board.get_size())
+        .map(|row| calc_row_siganture(board, row))
+        .collect::<HashSet<Option<i64>>>();
+    row_sigs.len() == board.get_size()
+}
+
+fn are_rows_balanced(board: &Board) -> bool {
+    let size = board.get_size();
+    let half_size = size / 2;
+    let get_num_fields =
+        |field: Field, y: usize| (0..size).filter(|x| field == board.get(*x, y)).count();
+    (0..size)
+        .map(|y| (get_num_fields(Field::X, y), get_num_fields(Field::O, y)))
+        .all(|num_xo| (half_size, half_size) == num_xo)
+}
+
+fn are_columns_balanced(board: &Board) -> bool {
+    let size = board.get_size();
+    let half_size = size / 2;
+    let get_num_fields =
+        |field: Field, x: usize| (0..size).filter(|y| field == board.get(x, *y)).count();
+    (0..size)
+        .map(|x| (get_num_fields(Field::X, x), get_num_fields(Field::O, x)))
+        .all(|num_xo| (half_size, half_size) == num_xo)
+}
+
+pub fn is_board_valid(board: &Board) -> bool {
+    are_columns_unique(board) && are_rows_unique(board) && are_rows_balanced(board)
+        && are_columns_balanced(board)
 }
 
 #[cfg(test)]
@@ -355,5 +396,77 @@ mod tests {
 
         assert_eq!(false, is_unique_row(&board, 1));
         assert_eq!(false, is_unique_row(&board, 3));
+    }
+
+    #[test]
+    fn is_board_valid_for_valid_board() {
+        let ok = board!(4,
+            X O X O
+            O X O X
+            X X O O
+            O O X X
+        );
+
+        assert_eq!(true, is_board_valid(&ok));
+    }
+
+    #[test]
+    fn non_unique_rows() {
+        let wrong = board!(4,
+            O X O X
+            X O X O
+            X X O O
+            X X O O
+        );
+
+        assert_eq!(false, are_rows_unique(&wrong));
+    }
+
+    #[test]
+    fn non_unique_columns() {
+        let wrong = board!(4,
+            O X O X
+            X O X O
+            X O O O
+            O X X X
+        );
+
+        assert_eq!(false, are_columns_unique(&wrong));
+    }
+
+    #[test]
+    fn unbalanced_rows() {
+        let wrong = board!(4,
+            O X O X
+            X O X O
+            X O O O
+            O X X X
+        );
+
+        assert_eq!(false, are_rows_balanced(&wrong));
+    }
+
+    #[test]
+    fn unbalanced_columns() {
+        let wrong = board!(4,
+            O X O X
+            X O X O
+            X X O O
+            O O X O
+        );
+
+        assert_eq!(false, are_columns_balanced(&wrong));
+    }
+
+    #[test]
+    fn is_board_valid_for_incomplete_board() {
+        let incomplete = board!(4,
+            E O X O
+            O X O X
+            X X O O
+            O O X X
+        );
+
+        assert_eq!(false, is_board_valid(&incomplete));
     }
 }

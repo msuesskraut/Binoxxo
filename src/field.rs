@@ -49,6 +49,7 @@ impl Board {
     }
 }
 
+#[macro_export]
 #[allow(unused_macros)]
 macro_rules! board {
     ($size : expr, $( $i : ident )* ) => {{
