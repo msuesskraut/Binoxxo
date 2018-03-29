@@ -141,9 +141,24 @@ fn are_columns_balanced(board: &Board) -> bool {
         .all(|num_xo| (half_size, half_size) == num_xo)
 }
 
+fn has_no_more_than_two_same_neightbors(board: &Board) -> bool {
+    let size = board.get_size();
+    for x in 1..(size - 1) {
+        for y in 1..(size - 1) {
+            let f = board.get(x, y);
+            if ((f == board.get(x - 1, y)) && (f == board.get(x + 1, y)))
+                || ((f == board.get(x, y - 1)) && (f == board.get(x, y + 1)))
+            {
+                return false;
+            }
+        }
+    }
+    true
+}
+
 pub fn is_board_valid(board: &Board) -> bool {
     are_columns_unique(board) && are_rows_unique(board) && are_rows_balanced(board)
-        && are_columns_balanced(board)
+        && are_columns_balanced(board) && has_no_more_than_two_same_neightbors(board)
 }
 
 #[cfg(test)]
@@ -411,12 +426,22 @@ mod tests {
     }
 
     #[test]
-    fn non_unique_rows() {
+    fn is_board_invalid_for_invalid_board() {
         let wrong = board!(4,
             O X O X
             X O X O
-            X X O O
-            X X O O
+            X O O O
+            O X X O
+        );
+
+        assert_eq!(false, is_board_valid(&wrong));
+    }
+
+    #[test]
+    fn non_unique_rows() {
+        let wrong = board!(2,
+            X O
+            X O
         );
 
         assert_eq!(false, are_rows_unique(&wrong));
@@ -424,11 +449,9 @@ mod tests {
 
     #[test]
     fn non_unique_columns() {
-        let wrong = board!(4,
-            O X O X
-            X O X O
-            X O O O
-            O X X X
+        let wrong = board!(2,
+            X X
+            O O
         );
 
         assert_eq!(false, are_columns_unique(&wrong));
@@ -468,5 +491,17 @@ mod tests {
         );
 
         assert_eq!(false, is_board_valid(&incomplete));
+    }
+
+    #[test]
+    fn more_then_two_o_in_a_row() {
+        let wrong = board!(4,
+            O X O X
+            X O X O
+            X O O O
+            O X X O
+        );
+
+        assert_eq!(false, has_no_more_than_two_same_neightbors(&wrong));
     }
 }
