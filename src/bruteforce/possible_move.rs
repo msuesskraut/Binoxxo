@@ -1,5 +1,5 @@
-use field::{Board, Field};
 use bruteforce::rules::is_move_valid;
+use field::{Board, Field};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum PossibleMove {
@@ -45,15 +45,17 @@ pub fn calc_possible_moves(board: &mut Board) -> Vec<PossibleMove> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::str::FromStr;
 
     #[test]
     fn get_possible_moves_for_all_empty_fields() {
-        let mut board = board!(4,
+        let mut board = Board::from_str(
+            "
             X X E E
             O O X X
             O X X O
-            E E X O
-        );
+            E E X O",
+        ).unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
         assert_eq!(4, possible_moves.len());
@@ -61,33 +63,36 @@ mod tests {
 
     #[test]
     fn get_possible_moves_does_not_change_board() {
-        let mut board = board!(4,
+        let mut board = Board::from_str(
+            "
             X X E E
             O O X X
             O X X O
-            E E X O
-        );
+            E E X O",
+        ).unwrap();
 
         let _ = calc_possible_moves(&mut board);
         assert_eq!(
-            board!(4,
+            Board::from_str(
+                "
             X X E E
             O O X X
             O X X O
-            E E X O
-        ),
+            E E X O"
+            ).unwrap(),
             board
         );
     }
 
     #[test]
     fn get_possible_one_moves_for_all_empty_fields() {
-        let mut board = board!(4,
+        let mut board = Board::from_str(
+            "
             X X E E
             O O X X
             O X X O
-            E E X O
-        );
+            E E X O",
+        ).unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
         assert!(possible_moves.contains(&PossibleMove::OneMove(2, 0, Field::O),));
@@ -98,12 +103,13 @@ mod tests {
 
     #[test]
     fn next_to_a_single_x_are_two_moves_possible() {
-        let mut board = board!(4,
+        let mut board = Board::from_str(
+            "
             X E E E
             E E E E
             E E E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
 
@@ -112,20 +118,22 @@ mod tests {
 
     #[test]
     fn move_not_possible_for_set_field() {
-        let mut board = board!(2,
+        let mut board = Board::from_str(
+            "
             X E
-            E E
-        );
+            E E",
+        ).unwrap();
 
         assert_eq!(PossibleMove::NoMove, calc_possible_move(&mut board, 0, 0));
     }
 
     #[test]
     fn two_options_for_empty_board() {
-        let mut board = board!(2,
+        let mut board = Board::from_str(
+            "
             E E
-            E E
-        );
+            E E",
+        ).unwrap();
 
         for x in 0..2 {
             for y in 0..2 {
@@ -139,10 +147,11 @@ mod tests {
 
     #[test]
     fn only_option_x_possible() {
-        let mut board = board!(2,
+        let mut board = Board::from_str(
+            "
             O O
-            O E
-        );
+            O E",
+        ).unwrap();
 
         assert_eq!(
             PossibleMove::OneMove(1, 1, Field::X),
@@ -152,12 +161,13 @@ mod tests {
 
     #[test]
     fn only_option_o_possible() {
-        let mut board = board!(4,
+        let mut board = Board::from_str(
+            "
             E X X O
             X X O O
             O O X X
-            X O O X
-        );
+            X O O X",
+        ).unwrap();
 
         assert_eq!(
             PossibleMove::OneMove(0, 0, Field::O),

@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum Field {
     Empty,
@@ -49,36 +51,46 @@ impl Board {
     }
 }
 
-#[macro_export]
-#[allow(unused_macros)]
-macro_rules! board {
-    ($size : expr, $( $i : ident )* ) => {{
-        #[allow(unused_imports)]
-        use self::Field::X;
-        #[allow(unused_imports)]
-        use self::Field::O;
-        #[allow(unused_imports)]
-        use self::Field::Empty as E;
-        let size = $size;
-        let mut board = Board::new(size);
+impl FromStr for Board {
+    type Err = String;
+
+    fn from_str(b: &str) -> Result<Board, String> {
+        let fields = b.split_whitespace().collect::<Vec<&str>>();
+        let size = (fields.len() as f64).sqrt() as usize;
+        if size * size != fields.len() {
+            return Err("Number of string elements must be square number".to_string());
+        }
+        if size < 2 {
+            return Err("Board too small (at least 2 elements)".to_string());
+        }
+        if 0 != size % 2 {
+            return Err("Board size must be even".to_string());
+        }
         let mut x = 0usize;
         let mut y = 0usize;
-        $(
-            match $i {
-                X => board.set(x, y, X),
-                O => board.set(x, y, O),
-                _ => (),
+        let mut board = Board::new(size);
+        for fieldstr in fields {
+            let mut field;
+            if fieldstr == "X" {
+                field = Field::X;
+            } else if fieldstr == "O" {
+                field = Field::O;
+            } else if fieldstr == "E" {
+                field = Field::Empty;
+            } else {
+                return Err("Unknown field string".to_string());
+            }
+            if Field::Empty != field {
+                board.set(x, y, field);
             }
             x += 1;
-            if size == x {
-                #[allow(unused_assignments)]
-                x = 0;
-                #[allow(unused_assignments)]
+            if x >= size {
                 y += 1;
+                x = 0;
             }
-        )*
-        board
-    }};
+        }
+        Ok(board)
+    }
 }
 
 #[cfg(test)]
@@ -94,17 +106,17 @@ mod tests {
     }
 
     #[test]
-    fn build_board_with_macro() {
-        let board = board!(2,
-            X O
-            E O
-        );
+    fn build_from_str() {
+        let board = Board::from_str(
+            "X O
+            E O",
+        ).unwrap();
 
         assert_eq!(2, board.size);
         assert_eq!(Field::X, board.get(0, 0));
         assert_eq!(Field::O, board.get(1, 0));
-        assert_eq!(Field::Empty, board.get(0, 1));
         assert_eq!(Field::O, board.get(1, 1));
+        assert_eq!(Field::Empty, board.get(0, 1));
     }
 
     #[test]
@@ -187,10 +199,10 @@ mod tests {
 
     #[test]
     fn clear_field() {
-        let mut board = board!(2,
-            X O
-            O X
-        );
+        let mut board = Board::from_str(
+            "X O
+            O X",
+        ).unwrap();
 
         board.clear(0, 0);
 
@@ -200,10 +212,10 @@ mod tests {
     #[test]
     #[should_panic]
     fn clear_x_oob_panics() {
-        let mut board = board!(2,
-            X O
-            O X
-        );
+        let mut board = Board::from_str(
+            "X O
+            O X",
+        ).unwrap();
 
         board.clear(2, 0);
     }
@@ -211,10 +223,10 @@ mod tests {
     #[test]
     #[should_panic]
     fn clear_y_oob_panics() {
-        let mut board = board!(2,
-            X O
-            O X
-        );
+        let mut board = Board::from_str(
+            "X O
+            O X",
+        ).unwrap();
 
         board.clear(0, 2);
     }
@@ -222,10 +234,10 @@ mod tests {
     #[test]
     #[should_panic]
     fn clear_already_empty_field_panics() {
-        let mut board = board!(2,
-            E O
-            O X
-        );
+        let mut board = Board::from_str(
+            "E O
+            O X",
+        ).unwrap();
 
         board.clear(0, 0);
     }

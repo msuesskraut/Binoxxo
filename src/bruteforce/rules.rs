@@ -164,39 +164,40 @@ pub fn is_board_valid(board: &Board) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::str::FromStr;
 
     #[test]
     fn x_with_adjacent_oo_is_valid() {
-        let board = board!(4,
-            O E E E
+        let board = Board::from_str(
+            "O E E E
             O E E E
             X E E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         assert_eq!(true, is_valid_pair_rule(&board, 0, 2));
     }
 
     #[test]
     fn x_with_surounding_oo_is_valid() {
-        let board = board!(4,
-            X O X E
+        let board = Board::from_str(
+            "X O X E
             E E E E
             E E E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         assert_eq!(true, is_valid_pair_rule(&board, 1, 0));
     }
 
     #[test]
     fn x_with_adjacent_xx_is_invalid_horizontally() {
-        let board = board!(4,
-            E E E E
+        let board = Board::from_str(
+            "E E E E
             X X X E
             E E E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         assert_eq!(false, is_valid_pair_rule(&board, 0, 1));
         assert_eq!(false, is_valid_pair_rule(&board, 1, 1));
@@ -205,12 +206,12 @@ mod tests {
 
     #[test]
     fn x_with_adjacent_xx_is_invalid_vertically() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "E O E E
             E O E E
             E O E E
-            E O E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         assert_eq!(false, is_valid_pair_rule(&board, 1, 0));
         assert_eq!(false, is_valid_pair_rule(&board, 1, 1));
@@ -219,60 +220,63 @@ mod tests {
 
     #[test]
     fn not_more_than_half_the_field_per_column_valid() {
-        let board = board!(4,
-            E X E E
+        let board = Board::from_str(
+            "E X E E
             E X E E
             E O E E
-            E O E E
-        );
+            E O E E",
+        ).unwrap();
 
         assert_eq!(true, is_valid_colum(&board, 1, 2));
     }
 
     #[test]
     fn not_more_than_half_the_field_per_column_invalid() {
-        let board = board!(4,
-            E X E E
+        let board = Board::from_str(
+            "E X E E
             E O E E
             E X E E
-            E X E E
-        );
+            E X E E",
+        ).unwrap();
 
         assert_eq!(false, is_valid_colum(&board, 1, 2));
     }
 
     #[test]
     fn not_more_than_half_the_field_per_row_valid() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             E E E E
             O X X O
             E E E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         assert_eq!(true, is_valid_row(&board, 2, 1));
     }
 
     #[test]
     fn not_more_than_half_the_field_per_row_invalid() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             E E E E
             O X O O
             E E E E
-            E E E E
-        );
+            E E E E",
+        ).unwrap();
 
         assert_eq!(false, is_valid_row(&board, 2, 1));
     }
 
     #[test]
     fn calc_column_siganture_of_non_empty_column() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             O O X X
             O X X X
             O O O X
-            O X O X
-        );
+            O X O X",
+        ).unwrap();
 
         assert_eq!(Some(0), calc_column_siganture(&board, 0));
         assert_eq!(Some(10), calc_column_siganture(&board, 1));
@@ -282,12 +286,13 @@ mod tests {
 
     #[test]
     fn calc_column_siganture_of_empty_column() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             O O E E
             O X X E
             O O O E
-            O X O E
-        );
+            O X O E",
+        ).unwrap();
 
         assert_eq!(None, calc_column_siganture(&board, 2));
         assert_eq!(None, calc_column_siganture(&board, 3));
@@ -295,10 +300,11 @@ mod tests {
 
     #[test]
     fn unique_column() {
-        let board = board!(2,
+        let board = Board::from_str(
+            "
             X O
-            O X
-        );
+            O X",
+        ).unwrap();
 
         assert_eq!(true, is_unique_column(&board, 0));
         assert_eq!(true, is_unique_column(&board, 1));
@@ -306,10 +312,11 @@ mod tests {
 
     #[test]
     fn double_column() {
-        let board = board!(2,
+        let board = Board::from_str(
+            "
             X X
-            O O
-        );
+            O O",
+        ).unwrap();
 
         assert_eq!(false, is_unique_column(&board, 0));
         assert_eq!(false, is_unique_column(&board, 1));
@@ -317,10 +324,11 @@ mod tests {
 
     #[test]
     fn empty_column_is_unique() {
-        let board = board!(2,
+        let board = Board::from_str(
+            "
             E E
-            O O
-        );
+            O O",
+        ).unwrap();
 
         assert_eq!(true, is_unique_column(&board, 0));
         assert_eq!(true, is_unique_column(&board, 1));
@@ -328,12 +336,13 @@ mod tests {
 
     #[test]
     fn calc_row_siganture_of_empty_row() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             E E E E
             O X E E
             O O O O
-            O X O X
-        );
+            O X O X",
+        ).unwrap();
 
         assert_eq!(None, calc_row_siganture(&board, 0));
         assert_eq!(None, calc_row_siganture(&board, 1));
@@ -341,12 +350,13 @@ mod tests {
 
     #[test]
     fn calc_row_siganture_of_non_empty_row() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             O O X X
             O X O X
             O O O X
-            X X X X
-        );
+            X X X X",
+        ).unwrap();
 
         assert_eq!(Some(12), calc_row_siganture(&board, 0));
         assert_eq!(Some(10), calc_row_siganture(&board, 1));
@@ -355,10 +365,11 @@ mod tests {
     }
     #[test]
     fn unique_row() {
-        let board = board!(2,
+        let board = Board::from_str(
+            "
             X O
-            O X
-        );
+            O X",
+        ).unwrap();
 
         assert_eq!(true, is_unique_row(&board, 0));
         assert_eq!(true, is_unique_row(&board, 1));
@@ -366,12 +377,13 @@ mod tests {
 
     #[test]
     fn valid_move() {
-        let board = board!(4,
+        let board = Board::from_str(
+            "
             O X X O
             X O O X
             X X O O
-            O O X X
-        );
+            O O X X",
+        ).unwrap();
 
         for x in 0..4 {
             for y in 0..4 {
@@ -382,14 +394,15 @@ mod tests {
 
     #[test]
     fn regression_board_01() {
-        let board = board!(6,
+        let board = Board::from_str(
+            "
             X O X O O X
             O X O X X O
             X O X O O X
             O X O X X O
             X X O X O O
-            O O X O X X
-        );
+            O O X O X X",
+        ).unwrap();
 
         assert_eq!(false, is_unique_column(&board, 2));
         assert_eq!(false, is_unique_column(&board, 5));
@@ -397,14 +410,15 @@ mod tests {
 
     #[test]
     fn regression_board_02() {
-        let board = board!(6,
+        let board = Board::from_str(
+            "
             X O X O O X
             O X O X X O
             X O X O O X
             O X O X X O
             X X O X O O
-            O O X O X X
-        );
+            O O X O X X",
+        ).unwrap();
 
         assert_eq!(false, is_unique_row(&board, 0));
         assert_eq!(false, is_unique_row(&board, 2));
@@ -415,92 +429,100 @@ mod tests {
 
     #[test]
     fn is_board_valid_for_valid_board() {
-        let ok = board!(4,
+        let ok = Board::from_str(
+            "
             X O X O
             O X O X
             X X O O
-            O O X X
-        );
+            O O X X",
+        ).unwrap();
 
         assert_eq!(true, is_board_valid(&ok));
     }
 
     #[test]
     fn is_board_invalid_for_invalid_board() {
-        let wrong = board!(4,
+        let wrong = Board::from_str(
+            "
             O X O X
             X O X O
             X O O O
-            O X X O
-        );
+            O X X O",
+        ).unwrap();
 
         assert_eq!(false, is_board_valid(&wrong));
     }
 
     #[test]
     fn non_unique_rows() {
-        let wrong = board!(2,
+        let wrong = Board::from_str(
+            "
             X O
-            X O
-        );
+            X O",
+        ).unwrap();
 
         assert_eq!(false, are_rows_unique(&wrong));
     }
 
     #[test]
     fn non_unique_columns() {
-        let wrong = board!(2,
+        let wrong = Board::from_str(
+            "
             X X
-            O O
-        );
+            O O",
+        ).unwrap();
 
         assert_eq!(false, are_columns_unique(&wrong));
     }
 
     #[test]
     fn unbalanced_rows() {
-        let wrong = board!(4,
+        let wrong = Board::from_str(
+            "
             O X O X
             X O X O
             X O O O
-            O X X X
-        );
+            O X X X",
+        ).unwrap();
 
         assert_eq!(false, are_rows_balanced(&wrong));
     }
 
     #[test]
     fn unbalanced_columns() {
-        let wrong = board!(4,
+        let wrong = Board::from_str(
+            "
             O X O X
             X O X O
             X X O O
-            O O X O
-        );
+            O O X O",
+        ).unwrap();
 
         assert_eq!(false, are_columns_balanced(&wrong));
     }
 
     #[test]
     fn is_board_valid_for_incomplete_board() {
-        let incomplete = board!(4,
+        let incomplete = Board::from_str(
+            "
             E O X O
             O X O X
             X X O O
-            O O X X
-        );
+            O O X X",
+        ).unwrap();
 
         assert_eq!(false, is_board_valid(&incomplete));
     }
 
     #[test]
     fn more_then_two_o_in_a_row() {
-        let wrong = board!(4,
+        let wrong = Board::from_str(
+            "
             O X O X
             X O X O
             X O O O
-            O X X O
-        );
+            O X X O",
+        ).unwrap();
 
         assert_eq!(false, has_no_more_than_two_same_neightbors(&wrong));
     }
