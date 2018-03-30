@@ -3,8 +3,8 @@
 #[macro_use]
 extern crate binoxxo;
 
-use binoxxo::bruteforce::rules::is_board_valid;
 use binoxxo::field::*;
+use binoxxo::rules::is_board_valid;
 
 fn main() {
     let ok = board!(4,

@@ -13,7 +13,7 @@ fn pause() {
 fn main() {
     let size = 10usize;
     let guesses = 15usize;
-    let board = binoxxo::bruteforce::build_board::create_puzzle_board(size, guesses);
+    let board = binoxxo::bruteforce::create_puzzle_board(size, guesses);
 
     for y in 0..size {
         let mut line = String::new();
