@@ -1,12 +1,22 @@
+//! The `field` module just models a board and its fields.
+//! See:
+//! - `enum` [`Field`](enum.Field.html)
+//! - `struct` [`Board`](struct.Board.html)
+
 use std::str::FromStr;
 
+/// Represents on field of a binoxxo board.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum Field {
+    /// field is empty
     Empty,
+    /// field contains a X
     X,
+    /// field contains a O
     O,
 }
 
+/// A sqaure binoxxo board with a side length and its fields.
 #[derive(Debug, PartialEq)]
 pub struct Board {
     size: usize,
@@ -14,7 +24,13 @@ pub struct Board {
 }
 
 impl Board {
+    /// Creates a new binoxxo board of side length `size`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `size` is odd or `0`.
     pub fn new(size: usize) -> Board {
+        assert!(size > 1, "board size must be larger than zero");
         assert!(0 == size % 2, "board size must be even");
 
         Board {
@@ -23,6 +39,12 @@ impl Board {
         }
     }
 
+    /// Sets field at column `x` and row `y` to `Empty`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `x` or `y` are out-of-bounds (larger or equal to `get_size`).
+    /// Panics if field at given coordinates is already `Empty`.
     pub fn clear(&mut self, x: usize, y: usize) {
         assert!(x < self.size);
         assert!(y < self.size);
@@ -31,6 +53,12 @@ impl Board {
         self.fields[x * self.size + y] = Field::Empty;
     }
 
+    /// Sets field at column `x` and row `y` to `field`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `x` or `y` are out-of-bounds (larger or equal to `get_size`).
+    /// Panics if `field` is `Empty`.
     pub fn set(&mut self, x: usize, y: usize, field: Field) {
         assert!(x < self.size);
         assert!(y < self.size);
@@ -39,6 +67,11 @@ impl Board {
         self.fields[x * self.size + y] = field;
     }
 
+    /// Returns field at column `x` and row `y` to `field`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `x` or `y` are out-of-bounds (larger or equal to `get_size`).
     pub fn get(&self, x: usize, y: usize) -> Field {
         assert!(x < self.size);
         assert!(y < self.size);
@@ -46,6 +79,7 @@ impl Board {
         self.fields[x * self.size + y]
     }
 
+    /// Returns side length of board `size`.
     pub fn get_size(&self) -> usize {
         self.size
     }

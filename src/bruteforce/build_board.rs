@@ -1,6 +1,13 @@
-use field::Board;
-use bruteforce::possible_move::calc_possible_moves;
+//! Implements a recursive brute force puzzle generator.
+//! First it generates a random and valid binoxxo board.
+//! Then it takes fields away again (by setting them to `Empty`) and
+//! returns the resulting incomplete board as puzzle.
+//! Because the board was constructed from a valid board, there exists
+//! at least one valid solution for the board.
+
 use bruteforce::choose_move::{select_next_move, Move, MoveSelection};
+use bruteforce::possible_move::calc_possible_moves;
+use field::Board;
 
 use rand::{thread_rng, Rng};
 
@@ -92,6 +99,17 @@ impl Game {
     }
 }
 
+/// Returns a valid and full binoxxo board of side length `size`.
+///
+/// # Panics
+///
+/// Panics if `size` is odd or zero.
+///
+/// May also panic if it didn't find a valid board. It just does a limited
+/// number of tries in order to avoid to long search of the brute force
+/// algorithm. This however leads to the small chance, that the algorithm does
+/// not find a valid board in the limited number of tries.
+/// No such panic was yet discovered while testing.
 pub fn create_full_board(size: usize) -> Board {
     let max_tries = size * size * 100;
     if let Some(board) = Game::build_full_board(size, max_tries) {
@@ -101,6 +119,16 @@ pub fn create_full_board(size: usize) -> Board {
     panic!("No board found for size {} after {} tries", size, max_tries);
 }
 
+/// Returns a binoxxo puzzle board of side length `size`.
+/// There are some empty fields on the board and there exists at-least
+/// one valid board, which can be constructed from the puzzle.
+///
+/// # Panics
+///
+/// Panics if `size` is odd or zero.
+///
+/// May also panic if it didn't find a valid board.
+/// See `fn` [`create_full_board`](fn.create_full_board.html) for details.
 pub fn create_puzzle_board(size: usize, guesses: usize) -> Board {
     let max_tries = size * size * 100;
     if let Some(board) = Game::build_puzzle_board(size, max_tries, guesses) {

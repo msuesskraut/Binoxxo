@@ -1,9 +1,18 @@
+//! This module contains the code to determine the options for any
+//! empty field of a board: `fn` [`calc_possible_moves`](fn.calc_possible_moves).
+
 use bruteforce::rules::is_move_valid;
 use field::{Board, Field};
 
+/// The options for a given empty field.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum PossibleMove {
+    /// no valid move possible (neither X nor O)
     NoMove,
+    /// exactly one move possible (either X or O)
+    /// - 1. tuple entry is the column `x`
+    /// - 2. tuple entry is the row `y`
+    /// - 3. tuple entry is the field (either `X` or `O`, but not `Empty`)
     OneMove(usize, usize, Field),
     TwoMoves(usize, usize),
 }
@@ -30,6 +39,7 @@ fn calc_possible_move(board: &mut Board, x: usize, y: usize) -> PossibleMove {
     }
 }
 
+/// For all empty fields on board `board` returns the possible moves.
 pub fn calc_possible_moves(board: &mut Board) -> Vec<PossibleMove> {
     let mut result = Vec::new();
     for x in 0..board.get_size() {

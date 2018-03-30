@@ -1,22 +1,48 @@
-use field::Field;
+//! This module implements selecting a move from a list of given moves with
+//! `fn` [`select_next_move`](fn.select_next_move).
+//! The selected move is represented as `struct` [`Move`](struct.Move.html).
+
 use bruteforce::possible_move::PossibleMove;
+use field::Field;
 
 use rand::{thread_rng, Rng};
 
+/// Enum whether the selected move was taken because of
+/// it was the only possible move for the field or
+/// randomly chosen from multiple possible moves
+/// (with both X and O possible for the field).
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum MoveSelection {
+    /// was randomly selected from multiple options (either X or O)
     Random,
+    /// was the only possible move available
     Fixed,
 }
 
+/// Next move to perform.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Move {
+    /// Either `X` or `O`.
     pub field: Field,
+    /// column of next move
     pub x: usize,
+    /// row of next move
     pub y: usize,
+    /// whether it was the only possible move or
+    /// randomly selected from multiple possible moves
     pub was_random: MoveSelection,
 }
 
+/// Returns from a list of possible moves `possible_moves` the next move to take.
+///
+/// If one of the `possible_moves` is impossible, `select_next_move` returns `None`,
+/// because from here on valid board can be constructed any more.
+///
+/// Otherwise it prefers fixed options (fields where only X or O are possible but not both).
+/// The return move is marked as [`MoveSelection`](enum.MoveSelection.html)`::Fixed`.
+///
+/// Only if there are no fixed options, it returns a randomly chosen move,
+/// which is marked as [`MoveSelection`](enum.MoveSelection.html)`::Random`.
 pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
     if possible_moves.is_empty() || possible_moves.contains(&PossibleMove::NoMove) {
         None

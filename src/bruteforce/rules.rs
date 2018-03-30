@@ -1,3 +1,6 @@
+//! This module can check entiere boards or single moves, whether the fullfill
+//! the binoxxo rules.
+
 use std::collections::HashSet;
 
 use field::{Board, Field};
@@ -102,6 +105,12 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
     }
 }
 
+/// Returns whether the content of the field at column `x` and row `y`
+/// on board `board` fullfills the binoxxo rules.
+/// The rest of the board is *not* checked, and, hence, even if
+/// this function returns `true`, the entiere board `board` may be invalid.
+///
+/// To check the entiere board use: `fn` [`is_board_valid`](fn.is_board_valid.html).
 pub fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
     is_valid_pair_rule(board, x, y) && is_valid_colum(board, x, y) && is_valid_row(board, x, y)
         && is_unique_row(board, y) && is_unique_column(board, x)
@@ -156,6 +165,10 @@ fn has_no_more_than_two_same_neightbors(board: &Board) -> bool {
     true
 }
 
+/// Returns whether all fields on the board `board` fullfill
+/// the binoxxo rules.
+///
+/// To check a single move use: `fn` [`is_move_valid`](fn.is_move_valid.html).
 pub fn is_board_valid(board: &Board) -> bool {
     are_columns_unique(board) && are_rows_unique(board) && are_rows_balanced(board)
         && are_columns_balanced(board) && has_no_more_than_two_same_neightbors(board)
