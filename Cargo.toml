@@ -6,7 +6,7 @@ description = "Binoxxo is a library to create and check binoxxo puzzles."
 repository = "https://github.com/msuesskraut/Binoxxo"
 readme = "Readme.md"
 keywords = ["binoxxo", "puzzle", "puzzle-game", "game", "puzzle-generator"]
-categories = ["Puzzle", "Game"]
+categories = ["games"]
 license = "MIT"
 
 [dependencies]
