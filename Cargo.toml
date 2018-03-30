@@ -13,4 +13,4 @@ license = "MIT"
 rand = "0.4"
 
 [badges]
-travis-ci = { repository = "https://travis-ci.org/msuesskraut/Binoxxo", branch = "master" }
+travis-ci = { repository = "msuesskraut/Binoxxo", branch = "master" }
