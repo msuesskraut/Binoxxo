@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/msuesskraut/Binoxxo.svg?branch=master)](https://travis-ci.org/msuesskraut/Binoxxo)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](License.md)
 [![Crates.io](https://img.shields.io/crates/v/binoxxo.svg)](https://crates.io/crates/binoxxo)
 [![Docs](https://docs.rs/binoxxo/badge.svg)](https://docs.rs/binoxxo)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](License.md)
+[![Build Status](https://travis-ci.org/msuesskraut/Binoxxo.svg?branch=master)](https://travis-ci.org/msuesskraut/Binoxxo)
+[![codecov](https://codecov.io/gh/msuesskraut/Binoxxo/branch/master/graph/badge.svg)](https://codecov.io/gh/msuesskraut/Binoxxo)
 
 # Binoxxo
 

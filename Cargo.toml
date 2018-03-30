@@ -14,3 +14,4 @@ rand = "0.4"
 
 [badges]
 travis-ci = { repository = "msuesskraut/Binoxxo", branch = "master" }
+codecov = { repository = "msuesskraut/Binoxxo", branch = "master", service = "github" }
