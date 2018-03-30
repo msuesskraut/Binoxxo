@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/msuesskraut/Binoxxo.svg?branch=master)](https://travis-ci.org/msuesskraut/Binoxxo)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](License.md)
 
 # Binoxxo
 
@@ -23,3 +24,7 @@ and API documentation for details:
 For more details see:
 [https://www.kreuzwortraetsel.ch/techniken-binoxxo/](https://www.kreuzwortraetsel.ch/techniken-binoxxo/)
 in German.
+
+# License
+
+[MIT](License.md)

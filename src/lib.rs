@@ -79,6 +79,10 @@
 //! For more details see:
 //! [https://www.kreuzwortraetsel.ch/techniken-binoxxo/](https://www.kreuzwortraetsel.ch/techniken-binoxxo/)
 //! in German.
+//!
+//! # License
+//!
+//! The crate is published under the [MIT](https://opensource.org/licenses/MIT) license.
 
 extern crate rand;
 
