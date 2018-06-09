@@ -182,10 +182,10 @@ mod tests {
     #[test]
     fn x_with_adjacent_oo_is_valid() {
         let board = Board::from_str(
-            "O E E E
-            O E E E
-            X E E E
-            E E E E",
+            "O _ _ _
+            O _ _ _
+            X _ _ _
+            _ _ _ _",
         ).unwrap();
 
         assert_eq!(true, is_valid_pair_rule(&board, 0, 2));
@@ -194,10 +194,10 @@ mod tests {
     #[test]
     fn x_with_surounding_oo_is_valid() {
         let board = Board::from_str(
-            "X O X E
-            E E E E
-            E E E E
-            E E E E",
+            "X O X _
+            _ _ _ _
+            _ _ _ _
+            _ _ _ _",
         ).unwrap();
 
         assert_eq!(true, is_valid_pair_rule(&board, 1, 0));
@@ -206,10 +206,10 @@ mod tests {
     #[test]
     fn x_with_adjacent_xx_is_invalid_horizontally() {
         let board = Board::from_str(
-            "E E E E
-            X X X E
-            E E E E
-            E E E E",
+            "_ _ _ _
+            X X X _
+            _ _ _ _
+            _ _ _ _",
         ).unwrap();
 
         assert_eq!(false, is_valid_pair_rule(&board, 0, 1));
@@ -220,10 +220,10 @@ mod tests {
     #[test]
     fn x_with_adjacent_xx_is_invalid_vertically() {
         let board = Board::from_str(
-            "E O E E
-            E O E E
-            E O E E
-            E E E E",
+            "_ O _ _
+            _ O _ _
+            _ O _ _
+            _ _ _ _",
         ).unwrap();
 
         assert_eq!(false, is_valid_pair_rule(&board, 1, 0));
@@ -234,10 +234,10 @@ mod tests {
     #[test]
     fn not_more_than_half_the_field_per_column_valid() {
         let board = Board::from_str(
-            "E X E E
-            E X E E
-            E O E E
-            E O E E",
+            "_ X _ _
+            _ X _ _
+            _ O _ _
+            _ O _ _",
         ).unwrap();
 
         assert_eq!(true, is_valid_colum(&board, 1, 2));
@@ -246,10 +246,10 @@ mod tests {
     #[test]
     fn not_more_than_half_the_field_per_column_invalid() {
         let board = Board::from_str(
-            "E X E E
-            E O E E
-            E X E E
-            E X E E",
+            "_ X _ _
+            _ O _ _
+            _ X _ _
+            _ X _ _",
         ).unwrap();
 
         assert_eq!(false, is_valid_colum(&board, 1, 2));
@@ -259,10 +259,10 @@ mod tests {
     fn not_more_than_half_the_field_per_row_valid() {
         let board = Board::from_str(
             "
-            E E E E
+            _ _ _ _
             O X X O
-            E E E E
-            E E E E",
+            _ _ _ _
+            _ _ _ _",
         ).unwrap();
 
         assert_eq!(true, is_valid_row(&board, 2, 1));
@@ -272,10 +272,10 @@ mod tests {
     fn not_more_than_half_the_field_per_row_invalid() {
         let board = Board::from_str(
             "
-            E E E E
+            _ _ _ _
             O X O O
-            E E E E
-            E E E E",
+            _ _ _ _
+            _ _ _ _",
         ).unwrap();
 
         assert_eq!(false, is_valid_row(&board, 2, 1));
@@ -301,10 +301,10 @@ mod tests {
     fn calc_column_siganture_of_empty_column() {
         let board = Board::from_str(
             "
-            O O E E
-            O X X E
-            O O O E
-            O X O E",
+            O O _ _
+            O X X _
+            O O O _
+            O X O _",
         ).unwrap();
 
         assert_eq!(None, calc_column_siganture(&board, 2));
@@ -339,7 +339,7 @@ mod tests {
     fn empty_column_is_unique() {
         let board = Board::from_str(
             "
-            E E
+            _ _
             O O",
         ).unwrap();
 
@@ -351,8 +351,8 @@ mod tests {
     fn calc_row_siganture_of_empty_row() {
         let board = Board::from_str(
             "
-            E E E E
-            O X E E
+            _ _ _ _
+            O X _ _
             O O O O
             O X O X",
         ).unwrap();
@@ -518,7 +518,7 @@ mod tests {
     fn is_board_valid_for_incomplete_board() {
         let incomplete = Board::from_str(
             "
-            E O X O
+            _ O X O
             O X O X
             X X O O
             O O X X",

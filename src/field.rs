@@ -4,6 +4,7 @@
 //! - `struct` [`Board`](struct.Board.html)
 
 use std::str::FromStr;
+use std::string::ToString;
 
 /// Represents on field of a binoxxo board.
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -85,6 +86,10 @@ impl Board {
     }
 }
 
+const X_STR : &str = "X";
+const O_STR : &str = "O";
+const EMPTY_STR : &str = "_";
+
 impl FromStr for Board {
     type Err = String;
 
@@ -105,11 +110,11 @@ impl FromStr for Board {
         let mut board = Board::new(size);
         for fieldstr in fields {
             let mut field;
-            if fieldstr == "X" {
+            if fieldstr == X_STR {
                 field = Field::X;
-            } else if fieldstr == "O" {
+            } else if fieldstr == O_STR {
                 field = Field::O;
-            } else if fieldstr == "E" {
+            } else if fieldstr == EMPTY_STR {
                 field = Field::Empty;
             } else {
                 return Err("Unknown field string".to_string());
@@ -124,6 +129,27 @@ impl FromStr for Board {
             }
         }
         Ok(board)
+    }
+}
+
+impl ToString for Board {
+    fn to_string(&self) -> String {
+        let mut result = String::new();
+        let size = self.get_size();
+        for y in 0..size {
+            for x in 0..size {
+                match self.get(x, y) {
+                    Field::X => result += X_STR,
+                    Field::O => result += O_STR,
+                    Field::Empty => result += EMPTY_STR,
+                }
+                if x < size - 1 {
+                    result += " ";
+                }
+            }
+            result += "\n";
+        }
+        result
     }
 }
 
@@ -143,7 +169,7 @@ mod tests {
     fn build_from_str() {
         let board = Board::from_str(
             "X O
-            E O",
+            _ O",
         ).unwrap();
 
         assert_eq!(2, board.size);
@@ -269,10 +295,20 @@ mod tests {
     #[should_panic]
     fn clear_already_empty_field_panics() {
         let mut board = Board::from_str(
-            "E O
+            "_ O
             O X",
         ).unwrap();
 
         board.clear(0, 0);
+    }
+
+    #[test]
+    fn board_to_string() {
+        let board = Board::from_str("
+            _ O
+            O X
+        ").unwrap();
+
+        assert_eq!("_ O\nO X\n".to_string(), board.to_string());
     }
 }

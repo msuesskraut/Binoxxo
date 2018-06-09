@@ -34,6 +34,7 @@
 //! let size = 10usize;
 //! let guesses = 15usize;
 //! let board = binoxxo::bruteforce::create_puzzle_board(size, guesses);
+//! println!("Board:\n{}", board.to_string());
 //! ```
 //! The `size` is length of one square side in number of fields.
 //! 10 is a common size.
@@ -48,6 +49,7 @@
 //! ```
 //! let size = 10usize;
 //! let board = binoxxo::bruteforce::create_full_board(size);
+//! println!("Board:\n{}", board.to_string());
 //! ```
 //!
 //! See the create_board example for how to print the resulting board.

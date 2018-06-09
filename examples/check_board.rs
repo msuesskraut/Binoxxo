@@ -4,6 +4,12 @@ extern crate binoxxo;
 use binoxxo::field::*;
 use binoxxo::rules::is_board_valid;
 use std::str::FromStr;
+use std::string::ToString;
+
+fn print_board_with_check(board: &Board)
+{
+    println!("Board:\n\n{} --> is valid: {}", board.to_string(), is_board_valid(board));
+}
 
 fn main() {
     // the 1st board fulfills all binoxxo rules
@@ -14,7 +20,8 @@ fn main() {
         O O X X",
     ).unwrap();
 
-    println!("Board {:?} is valid: {}", ok, is_board_valid(&ok));
+    print_board_with_check(&ok);
+    println!("\n");
 
     // this board breaks two binoxxo rules:
     // - more than two adjacent O
@@ -26,5 +33,5 @@ fn main() {
         O X X O",
     ).unwrap();
 
-    println!("Board {:?} is valid: {}", wrong, is_board_valid(&wrong));
+    print_board_with_check(&wrong);
 }

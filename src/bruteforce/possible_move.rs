@@ -61,10 +61,10 @@ mod tests {
     fn get_possible_moves_for_all_empty_fields() {
         let mut board = Board::from_str(
             "
-            X X E E
+            X X _ _
             O O X X
             O X X O
-            E E X O",
+            _ _ X O",
         ).unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
@@ -75,20 +75,20 @@ mod tests {
     fn get_possible_moves_does_not_change_board() {
         let mut board = Board::from_str(
             "
-            X X E E
+            X X _ _
             O O X X
             O X X O
-            E E X O",
+            _ _ X O",
         ).unwrap();
 
         let _ = calc_possible_moves(&mut board);
         assert_eq!(
             Board::from_str(
                 "
-            X X E E
+            X X _ _
             O O X X
             O X X O
-            E E X O"
+            _ _ X O"
             ).unwrap(),
             board
         );
@@ -98,10 +98,10 @@ mod tests {
     fn get_possible_one_moves_for_all_empty_fields() {
         let mut board = Board::from_str(
             "
-            X X E E
+            X X _ _
             O O X X
             O X X O
-            E E X O",
+            _ _ X O",
         ).unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
@@ -115,10 +115,10 @@ mod tests {
     fn next_to_a_single_x_are_two_moves_possible() {
         let mut board = Board::from_str(
             "
-            X E E E
-            E E E E
-            E E E E
-            E E E E",
+            X _ _ _
+            _ _ _ _
+            _ _ _ _
+            _ _ _ _",
         ).unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
@@ -130,8 +130,8 @@ mod tests {
     fn move_not_possible_for_set_field() {
         let mut board = Board::from_str(
             "
-            X E
-            E E",
+            X _
+            _ _",
         ).unwrap();
 
         assert_eq!(PossibleMove::NoMove, calc_possible_move(&mut board, 0, 0));
@@ -141,8 +141,8 @@ mod tests {
     fn two_options_for_empty_board() {
         let mut board = Board::from_str(
             "
-            E E
-            E E",
+            _ _
+            _ _",
         ).unwrap();
 
         for x in 0..2 {
@@ -160,7 +160,7 @@ mod tests {
         let mut board = Board::from_str(
             "
             O O
-            O E",
+            O _",
         ).unwrap();
 
         assert_eq!(
@@ -173,7 +173,7 @@ mod tests {
     fn only_option_o_possible() {
         let mut board = Board::from_str(
             "
-            E X X O
+            _ X X O
             X X O O
             O O X X
             X O O X",
