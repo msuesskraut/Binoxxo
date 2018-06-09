@@ -10,7 +10,7 @@ categories = ["games"]
 license = "MIT"
 
 [dependencies]
-rand = "0.4"
+rand = "0.5"
 
 [badges]
 travis-ci = { repository = "msuesskraut/Binoxxo", branch = "master" }
