@@ -6,6 +6,7 @@ use bruteforce::possible_move::PossibleMove;
 use field::Field;
 
 use rand::{thread_rng, Rng};
+use rand::seq::SliceRandom;
 
 /// Enum whether the selected move was taken because of
 /// it was the only possible move for the field or
@@ -57,7 +58,7 @@ pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
         let mut rng = thread_rng();
 
         if !single_options.is_empty() {
-            match rng.choose(&single_options) {
+            match single_options.choose(&mut rng) {
                 Some(&&PossibleMove::OneMove(x, y, field)) => {
                     let was_random = MoveSelection::Fixed;
                     Some(Move {
@@ -70,7 +71,7 @@ pub fn select_next_move(possible_moves: &[PossibleMove]) -> Option<Move> {
                 _ => unreachable!(),
             }
         } else {
-            match rng.choose(possible_moves) {
+            match possible_moves.choose(&mut rng) {
                 Some(&PossibleMove::TwoMoves(x, y)) => {
                     let field = if rng.gen() { Field::X } else { Field::O };
                     let was_random = MoveSelection::Random;
