@@ -18,7 +18,7 @@ pub enum Field {
 }
 
 /// A sqaure binoxxo board with a side length and its fields.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Board {
     size: usize,
     fields: Vec<Field>,
