@@ -1,6 +1,6 @@
 [package]
 name = "binoxxo"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["Martin Suesskraut <martin.suesskraut@gmail.com>"]
 description = "Binoxxo is a library to create and check binoxxo puzzles."
 repository = "https://github.com/msuesskraut/Binoxxo"
