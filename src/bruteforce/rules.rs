@@ -174,6 +174,19 @@ pub fn is_board_valid(board: &Board) -> bool {
         && are_columns_balanced(board) && has_no_more_than_two_same_neightbors(board)
 }
 
+/// Returns whether the board is full (i.e. has no `Empty` fields).
+pub fn is_board_full(board: &Board) -> bool {
+    let size = board.get_size();
+    for x in 1..(size - 1) {
+        for y in 1..(size - 1) {
+            if Field::Empty == board.get(x, y) {
+                return false;
+            }
+        }
+    }
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -538,5 +551,29 @@ mod tests {
         ).unwrap();
 
         assert_eq!(false, has_no_more_than_two_same_neightbors(&wrong));
+    }
+
+    #[test]
+    fn is_board_full_with_full_board() {
+        let full_board = Board::from_str(
+            "
+            O X O X
+            X O X O
+            X O O O
+            O X X O",
+        ).unwrap();
+        assert_eq!(true, is_board_full(&full_board));
+    }
+
+    #[test]
+    fn is_board_full_with_none_full_board() {
+        let none_full_board = Board::from_str(
+            "
+            O X O X
+            X _ X O
+            X O O O
+            O X X O",
+        ).unwrap();
+        assert_eq!(false, is_board_full(&none_full_board));
     }
 }
