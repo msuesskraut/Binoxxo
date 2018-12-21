@@ -86,9 +86,9 @@ impl Board {
     }
 }
 
-const X_STR : &str = "X";
-const O_STR : &str = "O";
-const EMPTY_STR : &str = "_";
+const X_STR: &str = "X";
+const O_STR: &str = "O";
+const EMPTY_STR: &str = "_";
 
 impl FromStr for Board {
     type Err = String;
@@ -170,7 +170,8 @@ mod tests {
         let board = Board::from_str(
             "X O
             _ O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(2, board.size);
         assert_eq!(Field::X, board.get(0, 0));
@@ -262,7 +263,8 @@ mod tests {
         let mut board = Board::from_str(
             "X O
             O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         board.clear(0, 0);
 
@@ -275,7 +277,8 @@ mod tests {
         let mut board = Board::from_str(
             "X O
             O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         board.clear(2, 0);
     }
@@ -286,7 +289,8 @@ mod tests {
         let mut board = Board::from_str(
             "X O
             O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         board.clear(0, 2);
     }
@@ -297,17 +301,21 @@ mod tests {
         let mut board = Board::from_str(
             "_ O
             O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         board.clear(0, 0);
     }
 
     #[test]
     fn board_to_string() {
-        let board = Board::from_str("
+        let board = Board::from_str(
+            "
             _ O
             O X
-        ").unwrap();
+        ",
+        )
+        .unwrap();
 
         assert_eq!("_ O\nO X\n".to_string(), board.to_string());
     }

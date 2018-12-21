@@ -72,7 +72,8 @@ fn is_unique_column(board: &Board, x: usize) -> bool {
                 .filter(|col| *col != x)
                 .map(|col| calc_column_siganture(board, col))
                 .filter(|sig| *sig == Some(reference))
-                .count() == 0
+                .count()
+                == 0
         }
         None => true,
     }
@@ -99,7 +100,8 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
                 .filter(|row| *row != y)
                 .map(|row| calc_row_siganture(board, row))
                 .filter(|sig| *sig == Some(reference))
-                .count() == 0
+                .count()
+                == 0
         }
         None => true,
     }
@@ -112,8 +114,11 @@ fn is_unique_row(board: &Board, y: usize) -> bool {
 ///
 /// To check the entiere board use: `fn` [`is_board_valid`](fn.is_board_valid.html).
 pub fn is_move_valid(board: &Board, x: usize, y: usize) -> bool {
-    is_valid_pair_rule(board, x, y) && is_valid_colum(board, x, y) && is_valid_row(board, x, y)
-        && is_unique_row(board, y) && is_unique_column(board, x)
+    is_valid_pair_rule(board, x, y)
+        && is_valid_colum(board, x, y)
+        && is_valid_row(board, x, y)
+        && is_unique_row(board, y)
+        && is_unique_column(board, x)
 }
 
 fn are_columns_unique(board: &Board) -> bool {
@@ -170,8 +175,11 @@ fn has_no_more_than_two_same_neightbors(board: &Board) -> bool {
 ///
 /// To check a single move use: `fn` [`is_move_valid`](fn.is_move_valid.html).
 pub fn is_board_valid(board: &Board) -> bool {
-    are_columns_unique(board) && are_rows_unique(board) && are_rows_balanced(board)
-        && are_columns_balanced(board) && has_no_more_than_two_same_neightbors(board)
+    are_columns_unique(board)
+        && are_rows_unique(board)
+        && are_rows_balanced(board)
+        && are_columns_balanced(board)
+        && has_no_more_than_two_same_neightbors(board)
 }
 
 /// Returns whether the board is full (i.e. has no `Empty` fields).
@@ -199,7 +207,8 @@ mod tests {
             O _ _ _
             X _ _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_valid_pair_rule(&board, 0, 2));
     }
@@ -211,7 +220,8 @@ mod tests {
             _ _ _ _
             _ _ _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_valid_pair_rule(&board, 1, 0));
     }
@@ -223,7 +233,8 @@ mod tests {
             X X X _
             _ _ _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_valid_pair_rule(&board, 0, 1));
         assert_eq!(false, is_valid_pair_rule(&board, 1, 1));
@@ -237,7 +248,8 @@ mod tests {
             _ O _ _
             _ O _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_valid_pair_rule(&board, 1, 0));
         assert_eq!(false, is_valid_pair_rule(&board, 1, 1));
@@ -251,7 +263,8 @@ mod tests {
             _ X _ _
             _ O _ _
             _ O _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_valid_colum(&board, 1, 2));
     }
@@ -263,7 +276,8 @@ mod tests {
             _ O _ _
             _ X _ _
             _ X _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_valid_colum(&board, 1, 2));
     }
@@ -276,7 +290,8 @@ mod tests {
             O X X O
             _ _ _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_valid_row(&board, 2, 1));
     }
@@ -289,7 +304,8 @@ mod tests {
             O X O O
             _ _ _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_valid_row(&board, 2, 1));
     }
@@ -302,7 +318,8 @@ mod tests {
             O X X X
             O O O X
             O X O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(Some(0), calc_column_siganture(&board, 0));
         assert_eq!(Some(10), calc_column_siganture(&board, 1));
@@ -318,7 +335,8 @@ mod tests {
             O X X _
             O O O _
             O X O _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(None, calc_column_siganture(&board, 2));
         assert_eq!(None, calc_column_siganture(&board, 3));
@@ -330,7 +348,8 @@ mod tests {
             "
             X O
             O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_unique_column(&board, 0));
         assert_eq!(true, is_unique_column(&board, 1));
@@ -342,7 +361,8 @@ mod tests {
             "
             X X
             O O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_unique_column(&board, 0));
         assert_eq!(false, is_unique_column(&board, 1));
@@ -354,7 +374,8 @@ mod tests {
             "
             _ _
             O O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_unique_column(&board, 0));
         assert_eq!(true, is_unique_column(&board, 1));
@@ -368,7 +389,8 @@ mod tests {
             O X _ _
             O O O O
             O X O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(None, calc_row_siganture(&board, 0));
         assert_eq!(None, calc_row_siganture(&board, 1));
@@ -382,7 +404,8 @@ mod tests {
             O X O X
             O O O X
             X X X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(Some(12), calc_row_siganture(&board, 0));
         assert_eq!(Some(10), calc_row_siganture(&board, 1));
@@ -395,7 +418,8 @@ mod tests {
             "
             X O
             O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_unique_row(&board, 0));
         assert_eq!(true, is_unique_row(&board, 1));
@@ -409,7 +433,8 @@ mod tests {
             X O O X
             X X O O
             O O X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         for x in 0..4 {
             for y in 0..4 {
@@ -428,7 +453,8 @@ mod tests {
             O X O X X O
             X X O X O O
             O O X O X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_unique_column(&board, 2));
         assert_eq!(false, is_unique_column(&board, 5));
@@ -444,7 +470,8 @@ mod tests {
             O X O X X O
             X X O X O O
             O O X O X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_unique_row(&board, 0));
         assert_eq!(false, is_unique_row(&board, 2));
@@ -461,7 +488,8 @@ mod tests {
             O X O X
             X X O O
             O O X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(true, is_board_valid(&ok));
     }
@@ -474,7 +502,8 @@ mod tests {
             X O X O
             X O O O
             O X X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_board_valid(&wrong));
     }
@@ -485,7 +514,8 @@ mod tests {
             "
             X O
             X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, are_rows_unique(&wrong));
     }
@@ -496,7 +526,8 @@ mod tests {
             "
             X X
             O O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, are_columns_unique(&wrong));
     }
@@ -509,7 +540,8 @@ mod tests {
             X O X O
             X O O O
             O X X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, are_rows_balanced(&wrong));
     }
@@ -522,7 +554,8 @@ mod tests {
             X O X O
             X X O O
             O O X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, are_columns_balanced(&wrong));
     }
@@ -535,7 +568,8 @@ mod tests {
             O X O X
             X X O O
             O O X X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, is_board_valid(&incomplete));
     }
@@ -548,7 +582,8 @@ mod tests {
             X O X O
             X O O O
             O X X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(false, has_no_more_than_two_same_neightbors(&wrong));
     }
@@ -561,7 +596,8 @@ mod tests {
             X O X O
             X O O O
             O X X O",
-        ).unwrap();
+        )
+        .unwrap();
         assert_eq!(true, is_board_full(&full_board));
     }
 
@@ -573,7 +609,8 @@ mod tests {
             X _ X O
             X O O O
             O X X O",
-        ).unwrap();
+        )
+        .unwrap();
         assert_eq!(false, is_board_full(&none_full_board));
     }
 }

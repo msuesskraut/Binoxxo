@@ -2,14 +2,17 @@
 extern crate binoxxo;
 
 use binoxxo::field::*;
-use binoxxo::rules::{is_board_valid, is_board_full};
+use binoxxo::rules::{is_board_full, is_board_valid};
 use std::str::FromStr;
 use std::string::ToString;
 
-fn print_board_with_check(board: &Board)
-{
-    println!("Board:\n\n{} --> is full:  {}\n     is valid: {}",
-    board.to_string(), is_board_full(board), is_board_valid(board));
+fn print_board_with_check(board: &Board) {
+    println!(
+        "Board:\n\n{} --> is full:  {}\n     is valid: {}",
+        board.to_string(),
+        is_board_full(board),
+        is_board_valid(board)
+    );
 }
 
 fn main() {
@@ -19,7 +22,8 @@ fn main() {
         O X O X
         X X O O
         O O X X",
-    ).unwrap();
+    )
+    .unwrap();
 
     print_board_with_check(&ok);
     println!("\n");
@@ -32,7 +36,8 @@ fn main() {
         X O X O
         X O O O
         O X X O",
-    ).unwrap();
+    )
+    .unwrap();
 
     print_board_with_check(&wrong);
 }

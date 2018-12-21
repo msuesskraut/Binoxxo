@@ -65,7 +65,8 @@ mod tests {
             O O X X
             O X X O
             _ _ X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
         assert_eq!(4, possible_moves.len());
@@ -79,7 +80,8 @@ mod tests {
             O O X X
             O X X O
             _ _ X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         let _ = calc_possible_moves(&mut board);
         assert_eq!(
@@ -89,7 +91,8 @@ mod tests {
             O O X X
             O X X O
             _ _ X O"
-            ).unwrap(),
+            )
+            .unwrap(),
             board
         );
     }
@@ -102,7 +105,8 @@ mod tests {
             O O X X
             O X X O
             _ _ X O",
-        ).unwrap();
+        )
+        .unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
         assert!(possible_moves.contains(&PossibleMove::OneMove(2, 0, Field::O),));
@@ -119,7 +123,8 @@ mod tests {
             _ _ _ _
             _ _ _ _
             _ _ _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         let possible_moves = calc_possible_moves(&mut board);
 
@@ -132,7 +137,8 @@ mod tests {
             "
             X _
             _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(PossibleMove::NoMove, calc_possible_move(&mut board, 0, 0));
     }
@@ -143,7 +149,8 @@ mod tests {
             "
             _ _
             _ _",
-        ).unwrap();
+        )
+        .unwrap();
 
         for x in 0..2 {
             for y in 0..2 {
@@ -161,7 +168,8 @@ mod tests {
             "
             O O
             O _",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(
             PossibleMove::OneMove(1, 1, Field::X),
@@ -177,7 +185,8 @@ mod tests {
             X X O O
             O O X X
             X O O X",
-        ).unwrap();
+        )
+        .unwrap();
 
         assert_eq!(
             PossibleMove::OneMove(0, 0, Field::O),

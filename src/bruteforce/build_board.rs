@@ -87,11 +87,13 @@ impl Game {
         while let Some(m) = moves.pop() {
             match m.was_random {
                 MoveSelection::Fixed => board.clear(m.x, m.y),
-                MoveSelection::Random => if 0 == guesses {
-                    break;
-                } else {
-                    guesses -= 1;
-                },
+                MoveSelection::Random => {
+                    if 0 == guesses {
+                        break;
+                    } else {
+                        guesses -= 1;
+                    }
+                }
             }
         }
 

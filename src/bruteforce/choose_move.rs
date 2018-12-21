@@ -5,8 +5,8 @@
 use bruteforce::possible_move::PossibleMove;
 use field::Field;
 
-use rand::{thread_rng, Rng};
 use rand::seq::SliceRandom;
+use rand::{thread_rng, Rng};
 
 /// Enum whether the selected move was taken because of
 /// it was the only possible move for the field or
