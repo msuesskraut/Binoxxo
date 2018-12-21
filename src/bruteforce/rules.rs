@@ -185,8 +185,8 @@ pub fn is_board_valid(board: &Board) -> bool {
 /// Returns whether the board is full (i.e. has no `Empty` fields).
 pub fn is_board_full(board: &Board) -> bool {
     let size = board.get_size();
-    for x in 1..(size - 1) {
-        for y in 1..(size - 1) {
+    for x in 0..size {
+        for y in 0..size {
             if Field::Empty == board.get(x, y) {
                 return false;
             }
