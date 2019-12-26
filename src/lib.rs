@@ -86,8 +86,6 @@
 //!
 //! The crate is published under the [MIT](https://opensource.org/licenses/MIT) license.
 
-extern crate rand;
-
 pub mod bruteforce;
 pub mod field;
 pub use bruteforce::rules;

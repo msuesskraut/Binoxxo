@@ -1,8 +1,8 @@
 //! This module contains the code to determine the options for any
 //! empty field of a board: `fn` [`calc_possible_moves`](fn.calc_possible_moves).
 
-use bruteforce::rules::is_move_valid;
-use field::{Board, Field};
+use crate::bruteforce::rules::is_move_valid;
+use crate::field::{Board, Field};
 
 /// The options for a given empty field.
 #[derive(Copy, Clone, Debug, PartialEq)]

@@ -5,9 +5,9 @@
 //! Because the board was constructed from a valid board, there exists
 //! at least one valid solution for the board.
 
-use bruteforce::choose_move::{select_next_move, Move, MoveSelection};
-use bruteforce::possible_move::calc_possible_moves;
-use field::Board;
+use crate::bruteforce::choose_move::{select_next_move, Move, MoveSelection};
+use crate::bruteforce::possible_move::calc_possible_moves;
+use crate::field::Board;
 
 use rand::{thread_rng, Rng};
 

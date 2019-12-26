@@ -1,9 +1,9 @@
 //! This module can check entiere boards or single moves, whether the fullfill
 //! the binoxxo rules.
 
-use std::collections::HashSet;
+use crate::field::{Board, Field};
 
-use field::{Board, Field};
+use std::collections::HashSet;
 
 fn is_valid_pair_rule(board: &Board, x: usize, y: usize) -> bool {
     let current = board.get(x, y);

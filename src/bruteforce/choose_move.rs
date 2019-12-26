@@ -2,8 +2,8 @@
 //! `fn` [`select_next_move`](fn.select_next_move).
 //! The selected move is represented as `struct` [`Move`](struct.Move.html).
 
-use bruteforce::possible_move::PossibleMove;
-use field::Field;
+use crate::bruteforce::possible_move::PossibleMove;
+use crate::field::Field;
 
 use rand::seq::SliceRandom;
 use rand::{thread_rng, Rng};
