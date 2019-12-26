@@ -109,7 +109,7 @@ impl FromStr for Board {
         let mut y = 0usize;
         let mut board = Board::new(size);
         for fieldstr in fields {
-            let mut field;
+            let field;
             if fieldstr == X_STR {
                 field = Field::X;
             } else if fieldstr == O_STR {
