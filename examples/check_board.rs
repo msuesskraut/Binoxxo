@@ -1,6 +1,4 @@
 //! This example shows how to check an existing board.
-extern crate binoxxo;
-
 use binoxxo::field::*;
 use binoxxo::rules::{is_board_full, is_board_valid};
 use std::str::FromStr;
