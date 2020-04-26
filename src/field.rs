@@ -169,7 +169,7 @@ mod tests {
     fn build_from_str() {
         let board = Board::from_str(
             "X O
-            _ O",
+             _ O",
         )
         .unwrap();
 

@@ -155,16 +155,55 @@ fn are_columns_balanced(board: &Board) -> bool {
         .all(|num_xo| (half_size, half_size) == num_xo)
 }
 
+/// Checks that field at position (x, y) on board has not the same two neightbors (vertically).
+/// Ignores empty.
+#[inline]
+fn has_no_more_than_two_same_neightbors_vert(board: &Board, x: usize, y: usize) -> bool {
+    let f = board.get(x, y);
+
+    Field::Empty == f || !((f == board.get(x, y - 1)) && (f == board.get(x, y + 1)))
+}
+
+/// Checks that field at position (x, y) on board has not the same two neightbors (horizontally).
+/// Ignores empty.
+#[inline]
+fn has_no_more_than_two_same_neightbors_horz(board: &Board, x: usize, y: usize) -> bool {
+    let f = board.get(x, y);
+
+    Field::Empty == f || !((f == board.get(x - 1, y)) && (f == board.get(x + 1, y)))
+}
+
 fn has_no_more_than_two_same_neightbors(board: &Board) -> bool {
     let size = board.get_size();
+    // first check the following area of board (exemplary 4 x 4 board)
+    // _ v v _
+    // h x x h
+    // h x x h
+    // _ v v _
+    //
+    // key:
+    // - _ not checked
+    // - v only checked in vertically direction
+    // - h only checked in horizontally direction
+    // - x checked in vertically and horizontally direction
     for x in 1..(size - 1) {
         for y in 1..(size - 1) {
-            let f = board.get(x, y);
-            if ((f == board.get(x - 1, y)) && (f == board.get(x + 1, y)))
-                || ((f == board.get(x, y - 1)) && (f == board.get(x, y + 1)))
-            {
+            if !has_no_more_than_two_same_neightbors_horz(board, x, y) || !has_no_more_than_two_same_neightbors_vert(board, x, y) {
                 return false;
             }
+        }
+    }
+    // the next two loops check the fields missed by the check above
+    // check top and bottom horizontally
+    for x in 1..(size - 1) {
+        if !has_no_more_than_two_same_neightbors_horz(board, x, 0) || !has_no_more_than_two_same_neightbors_horz(board, x, size - 1) {
+            return false;
+        }
+    }
+    // check left and right vertically
+    for y in 1..(size - 1) {
+        if !has_no_more_than_two_same_neightbors_vert(board, 0, y) || !has_no_more_than_two_same_neightbors_vert(board, size - 1, y) {
+            return false;
         }
     }
     true
@@ -612,5 +651,92 @@ mod tests {
         )
         .unwrap();
         assert_eq!(false, is_board_full(&none_full_board));
+    }
+
+    #[test]
+    fn has_no_more_than_two_same_neightbors_vert_ignores_empty() {
+        let invalid_board = Board::from_str(
+            " _ _ _ _
+              X _ _ _
+              X _ _ _
+              X _ _ _
+            ").unwrap();
+        assert!(has_no_more_than_two_same_neightbors_vert(&invalid_board, 3, 1));
+    }
+
+    #[test]
+    fn has_no_more_than_two_same_neightbors_vert_finds_errors() {
+        let invalid_board = Board::from_str(
+            " _ _ _ _
+              X _ _ _
+              X _ _ _
+              X _ _ _
+            ").unwrap();
+        assert!(has_no_more_than_two_same_neightbors_vert(&invalid_board, 0, 1));
+        assert!(!has_no_more_than_two_same_neightbors_vert(&invalid_board, 0, 2));
+    }
+
+    #[test]
+    fn has_no_more_than_two_same_neightbors_horz_ignores_empty() {
+        let invalid_board = Board::from_str(
+            " _ _ _ _
+              _ _ _ _
+              _ X X X
+              _ _ _ _
+            ").unwrap();
+        assert!(has_no_more_than_two_same_neightbors_horz(&invalid_board, 1, 1));
+    }
+
+    #[test]
+    fn has_no_more_than_two_same_neightbors_horz_finds_errors() {
+        let invalid_board = Board::from_str(
+            " _ _ _ _
+              _ _ _ _
+              _ X X X
+              _ _ _ _
+            ").unwrap();
+        assert!(has_no_more_than_two_same_neightbors_horz(&invalid_board, 1, 2));
+        assert!(!has_no_more_than_two_same_neightbors_horz(&invalid_board, 2, 2));
+    }
+
+    #[test]
+    fn has_no_more_than_two_same_neightbors_ignores_empty() {
+        let empty_board = Board::from_str(
+            " _ _ _ _
+              _ _ _ _
+              _ _ _ _
+              _ _ _ _
+            ").unwrap();
+        assert!(has_no_more_than_two_same_neightbors(&empty_board));
+    }
+
+    #[test]
+    fn has_no_more_than_two_same_neightbors_top() {
+        let invalid_board = Board::from_str(
+            " _ X X X
+              _ _ _ _
+              _ _ _ _
+              _ _ _ _
+            ").unwrap();
+        assert!(!has_no_more_than_two_same_neightbors(&invalid_board));
+    }
+
+    #[test]
+    fn is_board_valid_issue_1() {
+        let invalid_board = Board::from_str(
+            "O O X O O X X O X X
+            X O O X X O O X X O
+            O X O X O X X O O X
+            O X X O O X O X O X
+            X O X O X O X O X O
+            O X O X X O X X O O
+            O X X O O X O O X X
+            X O O X O X O X X O
+            X O X O X O X O O X
+            X X O X X O O X O O
+            ")
+        .unwrap();
+        assert!(!has_no_more_than_two_same_neightbors(&invalid_board));
+        assert!(!is_board_valid(&invalid_board));
     }
 }
