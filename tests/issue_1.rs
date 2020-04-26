@@ -17,7 +17,8 @@ fn issue_1() {
          X O O X O X O X X O
          X O X O X O X O O X
          X X O X X O O X O O
-        ")
+        ",
+    )
     .unwrap();
 
     assert!(is_board_full(&ok));

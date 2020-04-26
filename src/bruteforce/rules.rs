@@ -188,7 +188,9 @@ fn has_no_more_than_two_same_neightbors(board: &Board) -> bool {
     // - x checked in vertically and horizontally direction
     for x in 1..(size - 1) {
         for y in 1..(size - 1) {
-            if !has_no_more_than_two_same_neightbors_horz(board, x, y) || !has_no_more_than_two_same_neightbors_vert(board, x, y) {
+            if !has_no_more_than_two_same_neightbors_horz(board, x, y)
+                || !has_no_more_than_two_same_neightbors_vert(board, x, y)
+            {
                 return false;
             }
         }
@@ -196,13 +198,17 @@ fn has_no_more_than_two_same_neightbors(board: &Board) -> bool {
     // the next two loops check the fields missed by the check above
     // check top and bottom horizontally
     for x in 1..(size - 1) {
-        if !has_no_more_than_two_same_neightbors_horz(board, x, 0) || !has_no_more_than_two_same_neightbors_horz(board, x, size - 1) {
+        if !has_no_more_than_two_same_neightbors_horz(board, x, 0)
+            || !has_no_more_than_two_same_neightbors_horz(board, x, size - 1)
+        {
             return false;
         }
     }
     // check left and right vertically
     for y in 1..(size - 1) {
-        if !has_no_more_than_two_same_neightbors_vert(board, 0, y) || !has_no_more_than_two_same_neightbors_vert(board, size - 1, y) {
+        if !has_no_more_than_two_same_neightbors_vert(board, 0, y)
+            || !has_no_more_than_two_same_neightbors_vert(board, size - 1, y)
+        {
             return false;
         }
     }
@@ -660,8 +666,14 @@ mod tests {
               X _ _ _
               X _ _ _
               X _ _ _
-            ").unwrap();
-        assert!(has_no_more_than_two_same_neightbors_vert(&invalid_board, 3, 1));
+            ",
+        )
+        .unwrap();
+        assert!(has_no_more_than_two_same_neightbors_vert(
+            &invalid_board,
+            3,
+            1
+        ));
     }
 
     #[test]
@@ -671,9 +683,19 @@ mod tests {
               X _ _ _
               X _ _ _
               X _ _ _
-            ").unwrap();
-        assert!(has_no_more_than_two_same_neightbors_vert(&invalid_board, 0, 1));
-        assert!(!has_no_more_than_two_same_neightbors_vert(&invalid_board, 0, 2));
+            ",
+        )
+        .unwrap();
+        assert!(has_no_more_than_two_same_neightbors_vert(
+            &invalid_board,
+            0,
+            1
+        ));
+        assert!(!has_no_more_than_two_same_neightbors_vert(
+            &invalid_board,
+            0,
+            2
+        ));
     }
 
     #[test]
@@ -683,8 +705,14 @@ mod tests {
               _ _ _ _
               _ X X X
               _ _ _ _
-            ").unwrap();
-        assert!(has_no_more_than_two_same_neightbors_horz(&invalid_board, 1, 1));
+            ",
+        )
+        .unwrap();
+        assert!(has_no_more_than_two_same_neightbors_horz(
+            &invalid_board,
+            1,
+            1
+        ));
     }
 
     #[test]
@@ -694,9 +722,19 @@ mod tests {
               _ _ _ _
               _ X X X
               _ _ _ _
-            ").unwrap();
-        assert!(has_no_more_than_two_same_neightbors_horz(&invalid_board, 1, 2));
-        assert!(!has_no_more_than_two_same_neightbors_horz(&invalid_board, 2, 2));
+            ",
+        )
+        .unwrap();
+        assert!(has_no_more_than_two_same_neightbors_horz(
+            &invalid_board,
+            1,
+            2
+        ));
+        assert!(!has_no_more_than_two_same_neightbors_horz(
+            &invalid_board,
+            2,
+            2
+        ));
     }
 
     #[test]
@@ -706,7 +744,9 @@ mod tests {
               _ _ _ _
               _ _ _ _
               _ _ _ _
-            ").unwrap();
+            ",
+        )
+        .unwrap();
         assert!(has_no_more_than_two_same_neightbors(&empty_board));
     }
 
@@ -717,7 +757,9 @@ mod tests {
               _ _ _ _
               _ _ _ _
               _ _ _ _
-            ").unwrap();
+            ",
+        )
+        .unwrap();
         assert!(!has_no_more_than_two_same_neightbors(&invalid_board));
     }
 
@@ -734,7 +776,8 @@ mod tests {
             X O O X O X O X X O
             X O X O X O X O O X
             X X O X X O O X O O
-            ")
+            ",
+        )
         .unwrap();
         assert!(!has_no_more_than_two_same_neightbors(&invalid_board));
         assert!(!is_board_valid(&invalid_board));
