@@ -7,7 +7,7 @@ use std::str::FromStr;
 use std::string::ToString;
 
 /// Represents on field of a binoxxo board.
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Field {
     /// field is empty
     Empty,
@@ -318,5 +318,17 @@ mod tests {
         .unwrap();
 
         assert_eq!("_ O\nO X\n".to_string(), board.to_string());
+    }
+
+    #[test]
+    fn field_hashable() {
+        use std::collections::HashMap;
+
+        let mut h = HashMap::new();
+        h.insert(Field::Empty, "empty");
+        h.insert(Field::X, "X");
+        h.insert(Field::O, "O");
+
+        assert_eq!(h.get(&Field::X).unwrap(), &"X");
     }
 }
