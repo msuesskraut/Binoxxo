@@ -1,21 +1,23 @@
+# Binoxxo
+
 [![Crates.io](https://img.shields.io/crates/v/binoxxo.svg)](https://crates.io/crates/binoxxo)
 [![Docs](https://docs.rs/binoxxo/badge.svg)](https://docs.rs/binoxxo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](License.md)
 [![Build Status](https://travis-ci.org/msuesskraut/Binoxxo.svg?branch=master)](https://travis-ci.org/msuesskraut/Binoxxo)
 [![codecov](https://codecov.io/gh/msuesskraut/Binoxxo/branch/master/graph/badge.svg)](https://codecov.io/gh/msuesskraut/Binoxxo)
 
-# Binoxxo
-
 Binoxxo is a library to create and check binoxxo puzzles.
+
+See webapp at: [https://msuesskraut.github.io/binoxxo/](https://msuesskraut.github.io/binoxxo/) for a demo.
 
 ## How to use
 
 Add `binoxxo` to your dependencies.
 
 See [examples](https://github.com/msuesskraut/Binoxxo/tree/master/examples)
-and API documentation for details:
+and API documentation for details.
 
-# Rules of Binoxxo
+## Rules of Binoxxo
 
 * there must be no empty fields
 * there must be no more than two fields of the same token
@@ -28,6 +30,6 @@ For more details see:
 [https://www.kreuzwortraetsel.ch/techniken-binoxxo/](https://www.kreuzwortraetsel.ch/techniken-binoxxo/)
 in German.
 
-# License
+## License
 
 [MIT](License.md)
