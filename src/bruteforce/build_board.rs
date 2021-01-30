@@ -60,8 +60,8 @@ impl Game {
                 return Some(game);
             }
             if !game.new_move() {
-                let max = game.moves.len() - 1;
-                let number_of_moves = rng.gen_range(1, max);
+                let max = game.moves.len();
+                let number_of_moves = rng.gen_range(1..max);
                 game.undo_moves(number_of_moves);
             }
         }
