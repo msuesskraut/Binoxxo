@@ -1,9 +1,5 @@
 # Binoxxo
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Crates.io](https://img.shields.io/crates/v/rust-expression.svg)](https://crates.io/crates/rust-expression)
-[![Docs](https://docs.rs/rust-expression/badge.svg)](https://docs.rs/rust-expression)
-
 [![Crates.io](https://img.shields.io/crates/v/binoxxo.svg)](https://crates.io/crates/binoxxo)
 [![Docs](https://docs.rs/binoxxo/badge.svg)](https://docs.rs/binoxxo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](License.md)

@@ -12,7 +12,3 @@ edition = "2018"
 
 [dependencies]
 rand = "0.8.3"
-
-[badges]
-travis-ci = { repository = "msuesskraut/Binoxxo", branch = "master" }
-codecov = { repository = "msuesskraut/Binoxxo", branch = "master", service = "github" }
